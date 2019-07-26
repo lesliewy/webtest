@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- - Copyright 1999-2011 Alibaba Group. - - Licensed under the Apache License,
+	Version 2.0 (the "License"); - you may not use this file except in compliance
+	with the License. - You may obtain a copy of the License at - - http://www.apache.org/licenses/LICENSE-2.0
+	- - Unless required by applicable law or agreed to in writing, software -
+	distributed under the License is distributed on an "AS IS" BASIS, - WITHOUT
+	WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. - See the
+	License for the specific language governing permissions and - limitations
+	under the License. -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd"
+>
+    <!-- spring 连接数据库方式一: spring自带的DriverManagerDataSource -->
+    <!-- 每次getConnection 都会新建一个连接, 没有连接池概念 -->
+    <!--
+    <bean id="dataSource"
+          class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/mydb1?useUnicode=true&amp;characterEncoding=utf-8"/>
+        <property name="username" value="root"/>
+        <property name="password" value="root"/>
+    </bean>
+    -->
+
+    <!-- 方式二: C3P0数据源: 带连接池 -->
+    <!--
+    <bean name="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/mydb1"/>
+        <property name="user" value="root"/>
+        <property name="password" value="root"/>
+    </bean>
+    -->
+
+    <!-- 方式三: apache的dbcp插件： 带连接池 -->
+    <bean name="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/mydb1"/>
+        <property name="username" value="root"/>
+        <property name="password" value="root"/>
+        <property name="maxActive">
+            <value>255</value>
+        </property>
+        <property name="maxIdle">
+            <value>2</value>
+        </property>
+        <property name="maxWait">
+            <value>120000</value>
+        </property>
+    </bean>
+
+    <!-- 方式四: hibernate数据源 -->
+
+    <!-- 方式五: jndi -->
+    <!-- 需要在web服务器中配置数据源，比如在tomcat的server.xml处配置数据源 -->
+    <!--
+    <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName" value = "java:comp/env/jdbc/roseindiaDB_local" />
+    </bean>
+    -->
+</beans>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!--定义切面 指定拦截方法时 做什么-->
+    <bean id="userLog" class="com.wy.spring.aop.xml.UserLog"></bean>
+    <aop:config>
+        <!--指定切面-->
+        <aop:aspect ref="userLog">
+            <!--定义切点-->
+            <aop:pointcut id="logpoint"
+                          expression="execution(* com.wy.spring.aop.xml.UserService.showUserInfo(..))"></aop:pointcut>
+            <!--定义连接点-->
+            <aop:before pointcut-ref="logpoint" method="beforeLog"></aop:before>
+            <aop:after pointcut-ref="logpoint" method="afterLog"></aop:after>
+            <aop:around pointcut-ref="logpoint" method="aroundLog"></aop:around>
+            <aop:after-returning pointcut-ref="logpoint" method="afterReturningLog"></aop:after-returning>
+            <aop:after-throwing pointcut-ref="logpoint" method="afterThrowingLog"></aop:after-throwing>
+        </aop:aspect>
+    </aop:config>
+
+    <bean id="userService" class="com.wy.spring.aop.xml.UserService"></bean>
+</beans>

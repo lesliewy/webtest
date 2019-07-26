@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <import resource="spring-tx-manager.xml"></import>
+
+    <!-- 方式二:  所有Bean共享一个代理基类 -->
+    <!--
+    <bean id="transactionBase"
+          class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"
+          lazy-init="true" abstract="true">
+        <property name="transactionManager" ref="transactionManager" />
+        <property name="transactionAttributes">
+            <props>
+                <prop key="*">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="userDaoTarget" class="cn.wy.dao.impl.UserDaoImpl">
+        <property name="jdbcTemplate" ref="jdbcTemplate" />
+    </bean>
+
+    <bean id="userDaoTx" parent="transactionBase" >
+        <property name="target" ref="userDaoTarget" />
+    </bean>
+    -->
+</beans>

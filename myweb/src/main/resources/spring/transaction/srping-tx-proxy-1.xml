@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <import resource="spring-tx-manager.xml"></import>
+
+    <!--
+     Spring配置文件中关于事务配置总是由三个组成部分，分别是DataSource、TransactionManager和代理机制这三部分，无论哪种配置方式，一般变化的只是代理机制这部分
+     根据事务代理机制的不同，总结了五种Spring事务的配置方式
+     -->
+
+    <!-- 方式一:  每个Bean都有一个代理 -->
+    <!-- 配置DAO -->
+    <!--
+    <bean id="userDaoTarget" class="cn.wy.dao.impl.UserDaoImpl">
+        <property name="jdbcTemplate" ref="jdbcTemplate" />
+    </bean>
+
+    <bean id="userDaoTx"
+          class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager" ref="transactionManager" />
+        <property name="target" ref="userDaoTarget" />
+        <property name="proxyInterfaces" value="cn.wy.dao.intf.UserDao" />
+        <property name="transactionAttributes">
+            <props>
+                <prop key="*">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean>
+    -->
+</beans>

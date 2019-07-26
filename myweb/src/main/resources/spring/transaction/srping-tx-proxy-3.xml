@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <import resource="spring-tx-manager.xml"></import>
+
+    <context:annotation-config/>
+    <context:component-scan base-package="cn.wy.biz.service.*, cn.wy.dal.dao.*"/>
+
+    <!-- 方式三:  使用拦截器 -->
+    <!--
+        默认RuntimeException 和 Error 都会回滚, 即使没有配置.
+        key 属性配置的是被拦截的bean中的方法名.
+        -ApplicationException ：表示抛出ApplicationException 时，事务需要回滚
+        +BusinessException: 表示即使抛出该异常事务同样要提交
+        readOnly: 设置操作权限为只读,一般用于查询的方法,优化作用, 即使有非查询方法，也能执行.
+    -->
+    <bean id="transactionInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor">
+        <property name="transactionManager" ref="transactionManager"/>
+        <property name="transactionAttributes">
+            <props>
+                <!--<prop key="*">PROPAGATION_REQUIRED</prop>-->
+                <!--<prop key="addBothCalleeRuntimeException">PROPAGATION_REQUIRED</prop>-->
+                <!--<prop key="addBothCallerRuntimeException">PROPAGATION_REQUIRED</prop>-->
+                <!--<prop key="addBothCaller*">PROPAGATION_SUPPORTS, -ApplicationException,+BusinessException</prop>-->
+                <!--<prop key="addBothCaller*">PROPAGATION_SUPPORTS, readOnly</prop>-->
+                <!--<prop key="addBothCallee*">PROPAGATION_REQUIRES_NEW</prop>-->
+                <!--<prop key="addBothCaller*">PROPAGATION_REQUIRES_NEW</prop>-->
+                <!--<prop key="addBothCallee*">PROPAGATION_NESTED</prop>-->
+                <!--<prop key="addBothCaller*">PROPAGATION_NESTED</prop>-->
+            </props>
+        </property>
+    </bean>
+    <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+        <property name="beanNames">
+            <list>
+                <value>user*</value>
+            </list>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>transactionInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!--
+    <bean id="userDaoTx" class="cn.wy.dal.dao.impl.UserDaoImpl">
+        <property name="jdbcTemplate" ref="jdbcTemplate" />
+    </bean>
+    -->
+</beans>

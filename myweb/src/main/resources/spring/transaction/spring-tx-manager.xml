@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- - Copyright 1999-2011 Alibaba Group. - - Licensed under the Apache License,
+	Version 2.0 (the "License"); - you may not use this file except in compliance
+	with the License. - You may obtain a copy of the License at - - http://www.apache.org/licenses/LICENSE-2.0
+	- - Unless required by applicable law or agreed to in writing, software -
+	distributed under the License is distributed on an "AS IS" BASIS, - WITHOUT
+	WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. - See the
+	License for the specific language governing permissions and - limitations
+	under the License. -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd"
+>
+    <import resource="../datasource/spring-jdbc.xml"></import>
+
+    <!-- 事务管理器一: JDBC 配置 -->
+    <!-- DataSourceTransactionManager + dataSource -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource">
+            <ref bean="dataSource" />
+        </property>
+    </bean>
+
+    <!-- 事务管理器二: Hibernate 配置 -->
+    <!-- HibernateTransactionManager + SessionFactoryBean -->
+    <!--
+    <bean id="sessionFactory"
+          class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+        <property name="configLocation" value="classpath:hibernate.cfg.xml" />
+        <property name="configurationClass" value="org.hibernate.cfg.AnnotationConfiguration" />
+    </bean>
+    <bean id="transactionManager"
+          class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    -->
+
+    <!-- 事务管理器三: JPA配置 -->
+    <!-- JpaTransactionManager + entityManagerFactory -->
+    <!--
+    <persistence-unit name="myJpa" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <class>entity.Product</class>
+
+        <properties>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
+            <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
+            <property name="hibernate.connection.username" value="root"/>
+            <property name="hibernate.connection.password" value="123456"/>
+            <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/ProductDB"/>
+            <property name="hibernate.show_sql" value="true"></property>
+            <property name="hibernate.format_sql" value="true"></property>
+            <property name="hibernate.connection.autocommit" value="false"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+        </properties>
+
+    </persistence-unit>
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean">
+        　　    <property name="persistenceUnitName" value="myJpa"/>
+    </bean>
+    <bean id="txManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </bean>
+    -->
+
+
+
+</beans>
