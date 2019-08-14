@@ -30,6 +30,7 @@
         <commons-lang3-version>3.7</commons-lang3-version>
         <spring-retry-version>1.2.2.RELEASE</spring-retry-version>
         <aspectjweaver-version>1.9.1</aspectjweaver-version>
+        <elasticjob-version>1.1.1</elasticjob-version>
     </properties>
 
     <dependencyManagement>
@@ -149,18 +150,37 @@
             </dependency>
             <!-- RestEasy end -->
 
-            <!-- 日志 begin -->
+            <!-- slf4j 统一接口 begin -->
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
                 <version>${slf4j-api-version}</version>
+            </dependency>
+            <!-- slf4j 统一接口 end -->
+
+            <!-- log4j 日志 begin -->
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-api</artifactId>
+                <version>${log4j2-version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.logging.log4j</groupId>
                 <artifactId>log4j-core</artifactId>
                 <version>${log4j2-version}</version>
             </dependency>
-            <!-- 日志 end -->
+            <!-- Web项目需添加 -->
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-web</artifactId>
+                <version>${log4j2-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-slf4j-impl</artifactId>
+                <version>${log4j2-version}</version>
+            </dependency>
+            <!-- log4j 日志 end -->
 
             <!-- 数据库 begin -->
             <dependency>
@@ -203,7 +223,29 @@
                 <version>4.0.1</version>
                 <scope>provided</scope>
             </dependency>
+            <dependency>
+                <groupId>com.dangdang</groupId>
+                <artifactId>elastic-job-core</artifactId>
+                <version>${elasticjob-version}</version>
+            </dependency>
+            <!--
+            <dependency>
+                <groupId>com.dangdang</groupId>
+                <artifactId>elastic-job-lite-spring</artifactId>
+                <version>${elasticjob-lite-spring}</version>
+            </dependency>
+            -->
+            <!-- 本地jar配置, 有些jar maven仓库里没有 begin -->
+            <dependency>
+                <groupId>com.dangdang</groupId>
+                <artifactId>elastic-job-spring</artifactId>
+                <version>1.1.1</version>
+                <scope>system</scope>
+                <systemPath>/opt/mvn_repo/com/dangdang/elastic-job-spring/1.1.1/elastic-job-spring-1.1.1.jar
+                </systemPath>
+            </dependency>
 
+            <!-- end -->
         </dependencies>
     </dependencyManagement>
     <build>
@@ -229,6 +271,25 @@
                             </goals>
                             <configuration>
                                 <skip>false</skip>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <!-- copy 本地jar到指定的目录。 如果使用了本地dependency(scope是system), 就需要将本地jar copy 到war指定位置，否则不会包含该本地jar -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>copy-dependencies</id>
+                            <phase>compile</phase>
+                            <goals>
+                                <goal>copy-dependencies</goal>
+                            </goals>
+                            <configuration>
+                                <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/lib
+                                </outputDirectory>
+                                <includeScope>system</includeScope>
                             </configuration>
                         </execution>
                     </executions>

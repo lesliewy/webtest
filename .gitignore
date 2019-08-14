@@ -1,3 +1,4 @@
 .idea/
 *.iml
 target/
+myweb/src/main/webapp/WEB-INF/lib/
