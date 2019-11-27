@@ -1,6 +1,10 @@
 package cn.leetcode.problem1_100.problem1_10;
 
+import static cn.leetcode.ListNode.createNode;
+
 import org.junit.Test;
+
+import cn.leetcode.ListNode;
 
 /**
  * Created by leslie on 2019/11/14.
@@ -9,21 +13,21 @@ public class Problem2 {
 
     @Test
     public void testBackwardNum() {
-        ListNode t1 = createNode(new int[] { 1, 2, 3 });
+        ListNode t1 = createNode(new int[] { 1, 2, 3 }, -1);
 
-        t1 = createNode(new int[] { 1, 2, 3, 8, 9, 1 });
+        t1 = createNode(new int[] { 1, 2, 3, 8, 9, 1 }, -1);
 
     }
 
     @Test
     public void test1() {
-        ListNode t1 = createNode(new int[] { 3, 5, 9 });
-        ListNode t2 = createNode(new int[] { 3, 5, 9 });
-        System.out.println(forwardString(addTwoNumbers(t1, t2)));
+        ListNode t1 = createNode(new int[] { 3, 5, 9 }, -1);
+        ListNode t2 = createNode(new int[] { 3, 5, 9 }, -1);
+        System.out.println(forwardString(addTwoNumbers3(t1, t2)));
 
-        t1 = createNode(new int[] { 9 });
-        t2 = createNode(new int[] { 1, 9, 9, 9, 9, 9, 9, 9, 9, 9 });
-        System.out.println(forwardString(addTwoNumbers(t1, t2)));
+        t1 = createNode(new int[] { 9 }, -1);
+        t2 = createNode(new int[] { 1, 9, 9, 9, 9, 9, 9, 9, 9, 9 }, -1);
+        System.out.println(forwardString(addTwoNumbers3(t1, t2)));
     }
 
     public String forwardString(ListNode t) {
@@ -35,6 +39,13 @@ public class Problem2 {
         return sb.toString();
     }
 
+    /**
+     * 方法一: 将每个链表中的数字恢复，然后使用大数相加, 最后再将结果转成链表.
+     * 
+     * @param t1
+     * @param t2
+     * @return
+     */
     public ListNode addTwoNumbers(ListNode t1, ListNode t2) {
         String n = getSumStr(t1, t2);
 
@@ -96,7 +107,6 @@ public class Problem2 {
             int ap = nSum % 10;
             result.append(ap);
             c = nSum / 10;
-
         }
         // 最高位进位
         if (c > 0) {
@@ -111,7 +121,7 @@ public class Problem2 {
         return str == null ? null : (new StringBuilder(str)).reverse().toString();
     }
 
-    public ListNode genNodeFromStr(String a) {
+    private ListNode genNodeFromStr(String a) {
         String backwardStr = reverse(a);
         // List<Integer> integerList = Arrays.asList(backwardStr).stream().map(c ->
         // Integer.valueOf(c)).collect(Collectors.toList());
@@ -120,35 +130,112 @@ public class Problem2 {
         for (int i = 0; i < length; i++) {
             result[i] = Integer.valueOf(backwardStr.substring(i, i + 1));
         }
-        return createNode(result);
+        return createNode(result, -1);
     }
 
-    public ListNode createNode(int[] vals) {
-        ListNode result = null;
-        ListNode pre = null;
-        boolean first = true;
-        for (int i : vals) {
-            ListNode curr = new ListNode(i);
-            if (first) {
-                result = curr;
-            } else {
-                pre.next = curr;
+    /**
+     * 方法二: 直接对链表中的数进行大数相加, 稍微改造下下面的大数相加算法.
+     *
+     * @param t1
+     * @param t2
+     * @return
+     */
+    public ListNode addTwoNumbers2(ListNode t1, ListNode t2) {
+        int len1 = getListSize(t1);
+        int len2 = getListSize(t2);
+        int maxLen = len1 > len2 ? len1 : len2;
+        // 进位
+        int c = 0;
+        int n1, n2;
+        StringBuilder sb = new StringBuilder("");
+        for (int i = 0; i < maxLen; i++) {
+            n1 = t1 == null ? 0 : t1.val;
+            n2 = t2 == null ? 0 : t2.val;
+            int nSum = n1 + n2 + c;
+            int ap = nSum % 10;
+            sb.append(ap);
+            c = nSum / 10;
+
+            t1 = t1 == null ? null : t1.next;
+            t2 = t2 == null ? null : t2.next;
+        }
+
+        // 最高位进位
+        if (c > 0) {
+            sb.append(c);
+        }
+        return createNode2(sb.toString());
+    }
+
+    /**
+     * 方法二优化版: 直接在一次循环中构造list; 省掉通过字符串的转换过程;
+     * 
+     * @param t1
+     * @param t2
+     * @return
+     */
+    public ListNode addTwoNumbers3(ListNode t1, ListNode t2) {
+        // 进位
+        int c = 0;
+        int n1, n2;
+        int index = 0;
+        ListNode head = null, pre = null;
+        while (true) {
+            if (t1 == null && t2 == null) {
+                break;
             }
-            first = false;
-            pre = curr;
+            n1 = t1 == null ? 0 : t1.val;
+            n2 = t2 == null ? 0 : t2.val;
+            int nSum = n1 + n2 + c;
+            int ap = nSum % 10;
+            c = nSum / 10;
+
+            ListNode t = new ListNode(ap);
+            if (index == 0) {
+                head = t;
+                pre = t;
+            } else {
+                pre.next = t;
+                pre = t;
+            }
+
+            t1 = t1 == null ? null : t1.next;
+            t2 = t2 == null ? null : t2.next;
+            index++;
+        }
+
+        // 最高位进位
+        if (c > 0) {
+            ListNode t = new ListNode(c);
+            pre.next = t;
+        }
+        return head;
+    }
+
+    private int getListSize(ListNode t) {
+        if (t == null) {
+            return 0;
+        }
+        int result = 1;
+        while ((t = t.next) != null) {
+            result++;
         }
         return result;
     }
 
-}
-
-class ListNode {
-
-    int      val;
-    ListNode next;
-
-    ListNode(int x){
-        val = x;
+    private ListNode createNode2(String str) {
+        ListNode head = null, pre = null;
+        for (int i = 0; i < str.length(); i++) {
+            ListNode t = new ListNode(Integer.parseInt(str.charAt(i) + ""));
+            if (i == 0) {
+                head = t;
+                pre = head;
+            } else {
+                pre.next = t;
+                pre = t;
+            }
+        }
+        return head;
     }
 
 }
