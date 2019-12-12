@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
+ * <p>
+ * 数组和ArrayList之间的转换.
+ * </p>
  * Created by leslie on 2019/11/26.
  */
 public class Arrays1 {
@@ -18,10 +21,15 @@ public class Arrays1 {
         collections1();
         System.out.println("===stream:");
         stream1();
+
+        System.out.println("===toArray1:");
+        toArray1();
+        System.out.println("===toArray2:");
+        toArray2();
     }
 
     /**
-     * Arrays.asList()
+     * 数组转成ArrayList: Arrays.asList()
      */
     public static void asList1() {
         Integer[] a = new Integer[2];
@@ -43,6 +51,9 @@ public class Arrays1 {
 
     }
 
+    /**
+     * 数组转成ArrayList: Collections
+     */
     public static void collections1() {
         Integer[] a = new Integer[] { 2, 3 };
         List<Integer> b = new ArrayList<>();
@@ -50,6 +61,9 @@ public class Arrays1 {
         System.out.println(b);
     }
 
+    /**
+     * 数组转成ArrayList: Arrays.stream() 方式
+     */
     public static void stream1() {
         Integer[] a = new Integer[] { 1, 2 };
         List<Integer> b = Arrays.stream(a).collect(Collectors.toList());
@@ -64,5 +78,36 @@ public class Arrays1 {
         String d1 = "1,2,3,4";
         List<Integer> d2 = Arrays.stream(d1.split(",")).map(i -> Integer.valueOf(i)).collect(Collectors.toList());
         System.out.println(d2);
+    }
+
+    /**
+     * ArrayList 转成数组: arrayList.toArray();
+     */
+    public static void toArray1() {
+        List<Integer> arrayList = new ArrayList<Integer>() {
+
+            {
+                add(1);
+                add(2);
+            }
+        };
+        // 可以装成对象数组, 但不能转为int[]
+        Integer[] arr = arrayList.toArray(new Integer[arrayList.size()]);
+        System.out.println(arr);
+    }
+
+    /**
+     *
+     */
+    public static void toArray2() {
+        List<Integer> arrayList = new ArrayList<Integer>() {
+
+            {
+                add(1);
+                add(2);
+            }
+        };
+        int[] arr = arrayList.stream().mapToInt(i -> i.intValue()).toArray();
+        System.out.println(arr);
     }
 }

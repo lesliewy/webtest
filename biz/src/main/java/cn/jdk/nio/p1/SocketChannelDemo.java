@@ -21,7 +21,7 @@ public class SocketChannelDemo {
         try {
             socketChannel = SocketChannel.open();
             socketChannel.configureBlocking(false);
-            socketChannel.connect(new InetSocketAddress("10.10.195.115", 8080));
+            socketChannel.connect(new InetSocketAddress("127.0.0.1", 8080));
             if (socketChannel.finishConnect()) {
                 int i = 0;
                 while (true) {

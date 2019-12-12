@@ -1,10 +1,10 @@
 package cn.leetcode.problem1_100.problem1_10;
 
-import static cn.leetcode.ListNode.createNode;
+import static cn.leetcode.util.ListNode.createNode;
 
 import org.junit.Test;
 
-import cn.leetcode.ListNode;
+import cn.leetcode.util.ListNode;
 
 /**
  * Created by leslie on 2019/11/14.

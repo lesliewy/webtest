@@ -1,4 +1,4 @@
-package cn.leetcode;
+package cn.leetcode.util;
 
 /**
  * Created by leslie on 2019/11/26.
@@ -46,6 +46,15 @@ public class ListNode {
         }
         curr.next = cycle;
         return result;
+    }
+
+    public static void print(ListNode node) {
+        StringBuilder sb = new StringBuilder("");
+        while (node != null) {
+            sb.append(node.val).append("->");
+            node = node.next;
+        }
+        System.out.println(sb.toString());
     }
 
 }

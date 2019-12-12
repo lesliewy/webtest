@@ -1,6 +1,9 @@
 package cn.jdk.concurrent.deamon.p1;
 
 /**
+ * <pre>
+ *
+ *
  * java的线程分为两类: 用户线程和daemon线程
  * 用户线程: 用户线程可以简单的理解为用户定义的线程,当然包括main线程(以前我错误的认为main线程也是一个daemon线程,但是慢慢的发现原来main线程不是,
  * 因为如果我再main线程中创建一个用户线程,并且打出日志,我们会发现这样一个问题,main线程运行结束了,但是我们的线程任然在运行)
@@ -11,6 +14,8 @@ package cn.jdk.concurrent.deamon.p1;
  *   A. 守护线程创建的过程中需要先调用setDaemon方法进行设置,然后再启动线程.否则会报出IllegalThreadStateException异常.(个人在想一个问题,为什么不能动态更改线程为daemon线程?有时间一个补上这个内容,现在给出一个猜测: 是因为jvm判断线程状态的时候,如果当前只存在一个线程Thread1,如果我们把这个线程动态更改为daemon线程,jvm会认为当前已经不存在用户线程而退出,稍后将会给出正确结论,抱歉!如果有哪位大牛看到,希望给出指点,谢谢!)
  　　B. 由于daemon线程的终止条件是当前是否存在用户线程,所以我们不能指派daemon线程来进行一些业务操作,而只能服务用户线程.
  　　C. daemon线程创建的子线程任然是daemon线程.
+ * </pre>
+ * 
  * Created by leslie on 2019/11/20.
  */
 public class ThreadTest {

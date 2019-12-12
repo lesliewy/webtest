@@ -6,7 +6,7 @@ import java.util.Set;
 import org.junit.Assert;
 import org.junit.Test;
 
-import cn.leetcode.ListNode;
+import cn.leetcode.util.ListNode;
 
 /**
  * <p>

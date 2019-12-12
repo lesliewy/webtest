@@ -3,6 +3,8 @@ package cn.leetcode.problem1_100.problem21_30;
 import org.junit.Assert;
 import org.junit.Test;
 
+import cn.leetcode.util.ListNode;
+
 /**
  * Created by leslie on 2019/11/15.
  */
@@ -78,15 +80,5 @@ public class Problem24 {
         }
         return result;
 
-    }
-}
-
-class ListNode {
-
-    int      val;
-    ListNode next;
-
-    ListNode(int x){
-        val = x;
     }
 }
