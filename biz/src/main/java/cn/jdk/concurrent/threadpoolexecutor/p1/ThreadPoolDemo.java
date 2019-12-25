@@ -3,17 +3,20 @@ package cn.jdk.concurrent.threadpoolexecutor.p1;
 import java.util.concurrent.*;
 
 /**
+ * <pre>
  * 线程池状态:
- * RUNNING：这个没什么好说的，这是最正常的状态：接受新的任务，处理等待队列中的任务；
- * SHUTDOWN：不接受新的任务提交，但是会继续处理等待队列中的任务；
- * STOP：不接受新的任务提交，不再处理等待队列中的任务，中断正在执行任务的线程；
- * TIDYING：所有的任务都销毁了，workCount 为 0。线程池的状态在转换为 TIDYING 状态时，会执行钩子方法 terminated()；
- * TERMINATED：terminated() 方法结束后，线程池的状态就会变成这个；
- * RUNNING 定义为 -1，SHUTDOWN 定义为 0，其他的都比 0 大，所以等于 0 的时候不能提交任务，大于 0 的话，连正在执行的任务也需要中断。
- * RUNNING -> SHUTDOWN：当调用了 shutdown() 后，会发生这个状态转换，这也是最重要的；
- * (RUNNING or SHUTDOWN) -> STOP：当调用shutdownNow() 后，会发生这个状态转换，这下要清楚 shutDown() 和 shutDownNow() 的区别了；
- * SHUTDOWN -> TIDYING：当任务队列和线程池都清空后，会由 SHUTDOWN 转换为 TIDYING；
- * STOP -> TIDYING：当任务队列清空后，发生这个转换； TIDYING -> TERMINATED：这个前面说了，当 terminated() 方法结束后； Created by leslie on
+ *     RUNNING：这个没什么好说的，这是最正常的状态：接受新的任务，处理等待队列中的任务；
+ *     SHUTDOWN：不接受新的任务提交，但是会继续处理等待队列中的任务；
+ *     STOP：不接受新的任务提交，不再处理等待队列中的任务，中断正在执行任务的线程；
+ *     TIDYING：所有的任务都销毁了，workCount 为 0。线程池的状态在转换为 TIDYING 状态时，会执行钩子方法 terminated()；
+ *     TERMINATED：terminated() 方法结束后，线程池的状态就会变成这个；
+ *     RUNNING 定义为 -1，SHUTDOWN 定义为 0，其他的都比 0 大，所以等于 0 的时候不能提交任务，大于 0 的话，连正在执行的任务也需要中断。
+ *     RUNNING -> SHUTDOWN：当调用了 shutdown() 后，会发生这个状态转换，这也是最重要的；
+ *     (RUNNING or SHUTDOWN) -> STOP：当调用shutdownNow() 后，会发生这个状态转换，这下要清楚 shutDown() 和 shutDownNow() 的区别了；
+ *     SHUTDOWN -> TIDYING：当任务队列和线程池都清空后，会由 SHUTDOWN 转换为 TIDYING；
+ *     STOP -> TIDYING：当任务队列清空后，发生这个转换； TIDYING -> TERMINATED：这个前面说了，当 terminated() 方法结束后； Created by leslie on
+ *     </pre>
+ * 
  * 2019/11/19.
  */
 public class ThreadPoolDemo {

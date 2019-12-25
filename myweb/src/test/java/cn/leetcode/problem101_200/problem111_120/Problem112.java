@@ -8,6 +8,12 @@ import org.junit.Test;
 import cn.leetcode.util.TreeNode;
 
 /**
+ * <pre>
+ *     路径总和
+ *     给定一个二叉树和一个目标和，判断该树中是否存在根节点到叶子节点的路径，这条路径上所有节点值相加等于目标和。
+ 说明: 叶子节点是指没有子节点的节点。
+ * </pre>
+ * 
  * Created by leslie on 2019/11/28.
  */
 public class Problem112 {
@@ -41,14 +47,13 @@ public class Problem112 {
     }
 
     /**
-     * 方法一: 递归。
-     * <p>
-     * 时间复杂度： O(N) 每个节点访问一次.
-     * </p>
-     * <p>
-     * 空间复杂度: 最坏访问N个节点，调用栈开销为O(N); 最好平衡树情况下O(logN).
-     * </p>
-     * 
+     * <pre>
+     *    方法一: 递归。
+     *    f(n) = value + f(n.left) = value + f(n.right)
+     *    时间复杂度： O(N) 每个节点访问一次.
+     *    空间复杂度: 最坏访问N个节点，调用栈开销为O(N); 最好平衡树情况下O(logN).
+     * </pre>
+     *
      * @param root
      * @param sum
      * @return
@@ -65,11 +70,12 @@ public class Problem112 {
     }
 
     /**
-     * 方法二: 递归的迭代版本. 使用栈(LinkedList) 来实现. 维护两个栈: 一个node栈, 一个剩余分数栈; 栈顶表示当前节点还需要多少分数.
-     * <p>
-     * 因为将LinedList 当做栈使用，只用了其add() pooLast(), 所以也可以使用纯粹的基于数组的Stack类.
-     * </p>
-     * 
+     * <pre>
+     *    方法二: 递归的迭代版本.
+     *    使用栈(LinkedList) 来实现. 维护两个栈: 一个node栈, 一个剩余分数栈; 栈顶表示当前节点还需要多少分数.
+     *    因为将LinedList 当做栈使用，只用了其add() pooLast(), 所以也可以使用纯粹的基于数组的Stack类.
+     * </pre>
+     *
      * @param root
      * @param sum
      * @return

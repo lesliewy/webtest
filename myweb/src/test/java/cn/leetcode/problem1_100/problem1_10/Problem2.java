@@ -7,6 +7,17 @@ import org.junit.Test;
 import cn.leetcode.util.ListNode;
 
 /**
+ * <pre>
+ *     两数相加
+ *     给出两个 非空 的链表用来表示两个非负的整数。其中，它们各自的位数是按照 逆序 的方式存储的，并且它们的每个节点只能存储 一位 数字。
+ 如果，我们将这两个数相加起来，则会返回一个新的链表来表示它们的和。
+ 您可以假设除了数字 0 之外，这两个数都不会以 0 开头。
+
+ 输入：(2 -> 4 -> 3) + (5 -> 6 -> 4)
+ 输出：7 -> 0 -> 8
+ 原因：342 + 465 = 807
+ * </pre>
+ * 
  * Created by leslie on 2019/11/14.
  */
 public class Problem2 {
@@ -40,8 +51,10 @@ public class Problem2 {
     }
 
     /**
-     * 方法一: 将每个链表中的数字恢复，然后使用大数相加, 最后再将结果转成链表.
-     * 
+     * <pre>
+     *  方法一: 将每个链表中的数字恢复，然后使用大数相加, 最后再将结果转成链表.
+     * </pre>
+     *
      * @param t1
      * @param t2
      * @return
@@ -69,9 +82,14 @@ public class Problem2 {
     }
 
     /**
-     * 大数相加 思路： 1.反转两个字符串，便于从低位到高位相加和最高位的进位导致和的位数增加； 2.对齐两个字符串，即短字符串的高位用‘0’补齐，便于后面的相加； 3.把两个正整数相加，一位一位的加并加上进位；
-     * 4.最高位有进位则补上。
-     * 
+     * <pre>
+     *    大数相加 思路：
+     *    1.反转两个字符串，便于从低位到高位相加和最高位的进位导致和的位数增加；
+     *    2.对齐两个字符串，即短字符串的高位用‘0’补齐，便于后面的相加；
+     *    3.把两个正整数相加，一位一位的加并加上进位；
+     *    4.最高位有进位则补上。
+     * </pre>
+     *
      * @param n1
      * @param n2
      * @return
@@ -148,6 +166,7 @@ public class Problem2 {
         int c = 0;
         int n1, n2;
         StringBuilder sb = new StringBuilder("");
+        // 先计算出两个链表的长度，再循环.
         for (int i = 0; i < maxLen; i++) {
             n1 = t1 == null ? 0 : t1.val;
             n2 = t2 == null ? 0 : t2.val;
@@ -180,6 +199,7 @@ public class Problem2 {
         int n1, n2;
         int index = 0;
         ListNode head = null, pre = null;
+        // 和上面的不一样，链表不需要通过长度循环，直接判断是否为null
         while (true) {
             if (t1 == null && t2 == null) {
                 break;

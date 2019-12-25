@@ -6,12 +6,11 @@ import org.junit.Test;
 import cn.leetcode.util.ArrayUtils;
 
 /**
- * <p>
+ * <pre>
  * x的平方根.
- * </p>
- * <p>
  * 实现 int sqrt(int x) 函数。 计算并返回 x 的平方根，其中 x 是非负整数。 由于返回类型是整数，结果只保留整数的部分，小数部分将被舍去。
- * </p>
+ * </pre>
+ * 
  * Created by leslie on 2019/11/28.
  */
 public class Problem69 {
@@ -29,13 +28,11 @@ public class Problem69 {
     }
 
     /**
-     * <p>
-     * 方法一: 取x/2作为最大值建数组. 二分查找，依次判断数字n的平方是否等于x, n-1, n+1 的情况. 找出合适的.
-     * </p>
-     * <p>
-     * 空间复杂度很高，x取2147395599时超出内存限制.
-     * </p>
-     * 
+     * <pre>
+     *     方法一: 取x/2作为最大值建数组. 二分查找，依次判断数字n的平方是否等于x, n-1, n+1 的情况. 找出合适的.
+     *     空间复杂度很高，x取2147395599时超出内存限制.
+     * </pre>
+     *
      * @param x
      * @return
      */
@@ -76,14 +73,12 @@ public class Problem69 {
     }
 
     /**
-     * 方法二: 思想同方法一，但是不需要数组.
-     * <p>
-     * high 需要用long， 否则high + low 可能超出int的范围.
-     * </p>
-     * <p>
-     * 时间复杂度: O(logN)
-     * </p>
-     * 
+     * <pre>
+     *    方法二: 思想同方法一，但是不需要数组.
+     *        high 需要用long， 否则high + low 可能超出int的范围.
+     *        时间复杂度: O(logN)
+     * </pre>
+     *
      * @param x
      * @return
      */
@@ -114,10 +109,10 @@ public class Problem69 {
     }
 
     /**
-     * 方法三: 牛顿迭代法: 下面这种方法可以很有效地求出根号 aa 的近似值：首先随便猜一个近似值 xx，然后不断令 xx 等于 xx 和 a/xa/x 的平均数，迭代个六七次后 xx 的值就已经相当精确了。
-     * <p>
-     * 时间上比方法二快了一个2个数量级.
-     * </p>
+     * <pre>
+     *     方法三: 牛顿迭代法: 下面这种方法可以很有效地求出根号 aa 的近似值：首先随便猜一个近似值 xx，然后不断令 xx 等于 xx 和 a/xa/x 的平均数，迭代个六七次后 xx 的值就已经相当精确了。
+     *     时间上比方法二快了一个2个数量级.
+     * </pre>
      */
     public int mySqrt3(int a) {
         long x = a;

@@ -15,17 +15,14 @@ public class Initialization1 {
     }
 
     /**
-     * <p>
+     * <pre>
      * 第一层括弧实际是定义了一个匿名内部类 (Anonymous Inner Class)，第二层括弧实际上是一个实例初始化块 (instance initializer block)，
-     * </p>
-     * <p>
      * 这个块在内部匿名类构造时被执行。然后这边还有一点需要明白，实例初始化块的代码在编译器编译过后，是放在类的构造函数里面的，并且是在原构造函数代码的前面。
-     * </p>
-     * <p>
      * 1.此种方式是匿名内部类的声明方式，所以引用中持有着外部类的引用。所以当时串行化这个集合时外部类也会被不知不觉的串行化，当外部类没有实现serialize接口时，就会报错。
-     * 2.上例中，其实是声明了一个继承自HashMap的子类。然而有些串行化方法，例如要通过Gson串行化为json，或者要串行化为xml时，类库中提供的方式，是无法串行化Hashset或者HashMap的子类的，从而导致串行化失败。解决办法：重新初始化为一个HashMap对象：
+     * 2.上例中，其实是声明了一个继承自HashMap的子类。然而有些串行化方法，例如要通过Gson串行化为json，或者要串行化为xml时，类库中提供的方式，是无法串行化Hashset或者HashMap的子类的，从而导致串行化失败。
+     *    解决办法：重新初始化为一个HashMap对象：
      * new HashMap(map); 这样就可以正常初始化了
-     * </p>
+     * </pre>
      */
     public void map1() {
         Map<String, String> m = new HashMap<String, String>() {

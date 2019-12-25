@@ -3,6 +3,7 @@ package cn.jdk.concurrent.atomic.p1;
 import java.util.concurrent.atomic.AtomicIntegerArray;
 
 /**
+ * <pre>
  * 无锁的数组
  *
  public final int get(int i): 获得数组第i个下标的元素
@@ -12,7 +13,8 @@ import java.util.concurrent.atomic.AtomicIntegerArray;
  public final int getAndIncrement(int i): 将第i个下标的元素加1
  public final int getAndDecrement(int i): 将第i个下标的元素减1
  public final int getAndAdd(int i, int delta): 将第i个下标的元素增加delta（delta可以是负数）
-
+ * </pre>
+ * 
  * Created by leslie on 2019/11/20.
  */
 public class AtomicIntegerArrayDemo {

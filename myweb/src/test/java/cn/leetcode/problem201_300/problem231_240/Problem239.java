@@ -7,15 +7,13 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * <p>
+ * <pre>
  * 滑动窗口最大值.
- * </p>
- * <p>
- * 给定一个数组 nums，有一个大小为 k 的滑动窗口从数组的最左侧移动到数组的最右侧。你只可以看到在滑动窗口内的 k 个数字。滑动窗口每次只向右移动一位。 返回滑动窗口中的最大值。
- * </p>
- * <p>
+ * 给定一个数组 nums，有一个大小为 k 的滑动窗口从数组的最左侧移动到数组的最右侧。你只可以看到在滑动窗口内的 k 个数字。滑动窗口每次只向右移动一位。
+ * 返回滑动窗口中的最大值。
  * 输入: nums = [1,3,-1,-3,5,3,6,7], 和 k = 3 输出: [3,3,5,5,6,7]
- * </p>
+ * </pre>
+ * 
  * Created by leslie on 2019/11/27.
  */
 public class Problem239 {
@@ -33,11 +31,11 @@ public class Problem239 {
     }
 
     /**
-     * 方法一: 常规方法, 遍历, 窗口内找出最大值.
-     * <p>
-     * 时间复杂度: O(n*k)
-     * </p>
-     * 
+     * <pre>
+     *    方法一: 常规方法, 遍历, 窗口内找出最大值.
+     *    时间复杂度: O(n*k)
+     * </pre>
+     *
      * @param nums
      * @param k
      * @return
@@ -59,15 +57,23 @@ public class Problem239 {
         return result;
     }
 
+    private int[] subArray(int[] arr, int begin, int end) {
+        int[] result = new int[end - begin + 1];
+        int index = 0;
+        for (int i = begin; i <= end; i++) {
+            result[index++] = arr[i];
+        }
+        return result;
+    }
+
     /**
-     * 方法二: 双端队列. 队列中维护窗口内最大值及其后值. 队头是最大值. 尾部添加值时，判断与队尾的大小关系, 小于新加值的都可以直接删除.
-     * <p>
-     * 时间复杂度: O(N) 队列内的循环和n没有关系，是每个元素被处理了2次.
-     * </p>
-     * <p>
-     * 空间复杂度: O(N) 双向队列使用了k, 输出使用了O(N-k+1)
-     * </p>
-     * 
+     * <pre>
+     *    方法二: 双端队列.
+     *    队列中维护窗口内最大值及其后值的下标. 队头是最大值. 尾部添加值时，判断与队尾的大小关系, 小于新加值的都可以直接删除.
+     *    时间复杂度: O(N) 队列内的循环和n没有关系，是每个元素被处理了2次.
+     *    空间复杂度: O(N) 双向队列使用了k, 输出使用了O(N-k+1)
+     * </pre>
+     *
      * @todo 使用自实现的双端队列，提高性能.
      * @param nums
      * @param k
@@ -109,6 +115,7 @@ public class Problem239 {
             deque.removeFirst();
         }
 
+        // 新进值大于前面进入的，那就可以把之前的值都删掉了。
         while (!deque.isEmpty() && nums[i] >= nums[deque.getLast()]) {
             deque.removeLast();
         }
@@ -144,12 +151,4 @@ public class Problem239 {
         return result;
     }
 
-    private int[] subArray(int[] arr, int begin, int end) {
-        int[] result = new int[end - begin + 1];
-        int index = 0;
-        for (int i = begin; i <= end; i++) {
-            result[index++] = arr[i];
-        }
-        return result;
-    }
 }

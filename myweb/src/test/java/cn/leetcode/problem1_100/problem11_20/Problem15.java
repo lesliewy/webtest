@@ -6,13 +6,12 @@ import java.util.stream.Collectors;
 import org.junit.Test;
 
 /**
+ * <pre>
  * 三数之和.
- * <p>
  * 给定一个包含 n 个整数的数组 nums，判断 nums 中是否存在三个元素 a，b，c ，使得 a + b + c = 0 ？找出所有满足条件且不重复的三元组。 注意：答案中不可以包含重复的三元组。
- * </p>
- * <p>
  * 例如, 给定数组 nums = [-1, 0, 1, 2, -1, -4]， 满足要求的三元组集合为： [ [-1, 0, 1], [-1, -1, 2] ]
- * </p>
+ * </pre>
+ * 
  * Created by leslie on 2019/11/26.
  */
 public class Problem15 {
@@ -25,10 +24,10 @@ public class Problem15 {
     }
 
     /**
+     * <pre>
      * 方法一: 常规方法O(n^3), 使用哈希表降到O(n^2), 数据可以重复.
-     * <p>
      * 最后leetcode上报超时. 非常多0的情况.
-     * </p>
+     * </pre>
      *
      * @param nums
      * @return
@@ -65,11 +64,12 @@ public class Problem15 {
     }
 
     /**
+     * <pre>
      * 方法二: 排序 + 双指针(固定一点)
-     * <p>
+     * num[k]最小,  num[k] > 0 不用考虑;  小于0时, i, j 双指针指向排序数组的两头, 向中间移动
      * 时间复杂度: O(n^2) 空间复杂度: O(1)
-     * </p>
-     *
+     * </pre>
+     * 
      * @param nums
      * @return
      */
@@ -82,7 +82,7 @@ public class Problem15 {
         int len = nums.length;
         int k, i, j;
         List<List<Integer>> result = new ArrayList<>();
-        // 每次固定k点, 移动i,j, 分别从两头向中间移动.
+        // nums[k] 为最小值, 每次固定k点, 移动i,j, 分别从两头向中间移动.
         for (k = 0; k < len; k++) {
             // nums[k] 最小，一旦大于0就结束.
             if (nums[k] > 0) {
@@ -92,6 +92,7 @@ public class Problem15 {
             if (k > 0 && nums[k] == nums[k - 1]) {
                 continue;
             }
+            // 设置i j 为数组的两头.
             i = k + 1;
             j = len - 1;
             while (i < j) {
@@ -100,6 +101,7 @@ public class Problem15 {
                     // 找到一个组合, 此时应该同时移动i,j.
                     result.add(Arrays.asList(nums[k], nums[i], nums[j]));
 
+                    // 需要跳过所有重复的
                     i++;
                     while (nums[i] == nums[i - 1] && i < j) {
                         i++;

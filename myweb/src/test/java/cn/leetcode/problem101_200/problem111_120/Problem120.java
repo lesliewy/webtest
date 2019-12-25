@@ -40,7 +40,8 @@ public class Problem120 {
      * <pre>
      * 方法一: 动态规划.
      * DP 重复性(分治)
-     *    problem(i,j) = min(sub(i+1,j) , sub(i+1,j+1)) + a[i,j] problem(i,j)：当前行当前列（二维数组）的向下面走的路径总数
+     *    problem(i,j) = min(sub(i+1,j) , sub(i+1,j+1)) + a[i,j]
+     *    problem(i,j)：当前行当前列（二维数组）的向下面走的路径总数
      *    sub(i+1,j)：下一行当前列(即向下并向左边走)的路径总数
      *    sub(i+1,j+1)：下一行下一列(即向下并向右边走)的路径总数 路径总数包括自己所在位置a[i,j]，即到达当前位置所需的步数
      * 定义状态数组

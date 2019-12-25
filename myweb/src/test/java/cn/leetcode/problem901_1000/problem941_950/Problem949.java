@@ -111,7 +111,7 @@ public class Problem949 {
             for (int j = 0; j < 4; ++j)
                 if (j != i) for (int k = 0; k < 4; ++k)
                     if (k != i && k != j) {
-                        // 下标总和为6.
+                        // 下标总和为6, 计算出最后一个数.
                         int l = 6 - i - j - k;
 
                         // For each permutation of A[i], read out the time and

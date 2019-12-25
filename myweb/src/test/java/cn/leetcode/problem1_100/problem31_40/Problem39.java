@@ -48,10 +48,11 @@ public class Problem39 {
     /**
      * <pre>
      *    方法一: 回溯法, 剪枝.
+     *    以7为根节点，分别减去给定数组中的元素。
      *    做搜索、回溯问题的套路是画图，代码其实就是根据画出的树形图写出来的。
      *    https://leetcode-cn.com/problems/combination-sum/solution/hui-su-suan-fa-jian-zhi-python-dai-ma-java-dai-m-2/
      * </pre>
-     *
+     * 
      * @param candidates
      * @param target
      * @return
@@ -61,15 +62,50 @@ public class Problem39 {
         if (len == 0) {
             return res;
         }
+        this.len = len;
+        this.candidates = candidates;
+        findCombinationSum1(target, 0, new Stack<>());
+        return res;
+    }
+
+    private void findCombinationSum1(int residue, int start, Stack<Integer> pre) {
+        if (residue < 0) {
+            return;
+        }
+        if (residue == 0) {
+            res.add(new ArrayList<>(pre));
+            return;
+        }
+        for (int i = start; i < len; i++) {
+            pre.add(candidates[i]);
+            findCombinationSum1(residue - candidates[i], i, pre);
+            pre.pop();
+        }
+    }
+
+    /**
+     * <pre>
+     *    方法一: 优化版.
+     * </pre>
+     *
+     * @param candidates
+     * @param target
+     * @return
+     */
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        int len = candidates.length;
+        if (len == 0) {
+            return res;
+        }
         // 优化添加的代码1：先对数组排序，可以提前终止判断
         Arrays.sort(candidates);
         this.len = len;
         this.candidates = candidates;
-        findCombinationSum(target, 0, new Stack<>());
+        findCombinationSum2(target, 0, new Stack<>());
         return res;
     }
 
-    private void findCombinationSum(int residue, int start, Stack<Integer> pre) {
+    private void findCombinationSum2(int residue, int start, Stack<Integer> pre) {
         if (residue == 0) {
             // Java 中可变对象是引用传递，因此需要将当前 path 里的值拷贝出来
             res.add(new ArrayList<>(pre));
@@ -81,7 +117,7 @@ public class Problem39 {
         for (int i = start; i < len && residue - candidates[i] >= 0; i++) {
             pre.add(candidates[i]);
             // 【关键】因为元素可以重复使用，这里递归传递下去的是 i 而不是 i + 1
-            findCombinationSum(residue - candidates[i], i, pre);
+            findCombinationSum2(residue - candidates[i], i, pre);
             pre.pop();
 
         }
