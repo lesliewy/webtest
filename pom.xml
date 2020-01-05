@@ -31,6 +31,9 @@
         <spring-retry-version>1.2.2.RELEASE</spring-retry-version>
         <aspectjweaver-version>1.9.1</aspectjweaver-version>
         <elasticjob-version>1.1.1</elasticjob-version>
+        <protobuf.version>3.10.0</protobuf.version>
+        <grpc.version>1.25.0</grpc.version>
+        <guava.version>23.0</guava.version>
     </properties>
 
     <dependencyManagement>
@@ -243,6 +246,11 @@
                 <scope>system</scope>
                 <systemPath>/opt/mvn_repo/com/dangdang/elastic-job-spring/1.1.1/elastic-job-spring-1.1.1.jar
                 </systemPath>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
             </dependency>
 
             <!-- end -->

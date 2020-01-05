@@ -1,6 +1,5 @@
-package cn.leetcode.Problems1101_1200.problem1131_1140;
+package cn.leetcode.Problem1101_1200.problem1131_1140;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 /**

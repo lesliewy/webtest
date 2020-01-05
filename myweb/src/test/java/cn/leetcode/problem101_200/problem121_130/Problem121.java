@@ -52,7 +52,7 @@ public class Problem121 {
 
     /**
      * <pre>
-     *     方法二:
+     *     方法二: 直观法.  遍历数组，买入价是当前已知最小的.  卖出价是买入价后最大的.
      * </pre>
      * 
      * @param prices
@@ -63,7 +63,7 @@ public class Problem121 {
         int buy = Integer.MAX_VALUE;
         int ans = 0;
         for (int i = 0; i < len; i++) {
-            // 如果当前价格大于之前的买入价格, 则今天买入.
+            // 如果当前价格小于之前的买入价格, 则今天买入.
             buy = Math.min(buy, prices[i]);
             // 比较利润大小.
             ans = Math.max(ans, prices[i] - buy);

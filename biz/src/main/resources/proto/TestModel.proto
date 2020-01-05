@@ -1,0 +1,17 @@
+syntax = "proto3";
+package cn.wy.grpc.proto;
+// java_package 选项: 生成java类所在的包.
+option java_package = "cn.wy.grpc.service.model";
+message TestRequest {
+    // 1,2,3 表示字段编号.
+    string name = 1;
+    int32 id = 2;
+}
+message TestResponse {
+    string message = 1;
+}
+
+
+// 使用maven plugin, 生成java代码.
+// mvn protobuf:compile
+// mvn protobuf:custom-compile
