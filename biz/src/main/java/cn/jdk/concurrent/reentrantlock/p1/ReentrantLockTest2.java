@@ -10,9 +10,11 @@ import java.util.concurrent.locks.ReentrantLock;
 public class ReentrantLockTest2 {
 
     /**
+     * <pre>
      * 默认是非公平锁。 大部分情况下我们使用非公平锁，因为其性能比公平锁好很多。但是公平锁能够避免线程饥饿，某些情况下也很有用;
      * fairsync: tryAcquire中需要先看等待队列中前面有没有其他等待线程，只有在没有的情况下才CAS.
      * nonfairsync 中所有等待线程都参与state 的CAS竞争, 将其从0设置为1;
+     * </pre>
      */
     static Lock lock = new ReentrantLock(true);
     // static Lock lock = new ReentrantLock();

@@ -1,7 +1,5 @@
 package cn;
 
-import com.mysql.jdbc.StringUtils;
-
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
@@ -11,7 +9,7 @@ import java.text.DecimalFormat;
 public class Test {
 
     @org.junit.Test
-    public void test1(){
+    public void test1() {
         Float a = 1234567000.12f;
         DecimalFormat b = new DecimalFormat("0.00");
         System.out.println(String.valueOf(a));
@@ -21,39 +19,40 @@ public class Test {
         System.out.println(c);
     }
 
+    /*
     @org.junit.Test
-    public void test2(){
+    public void test2() {
         System.out.println(org.apache.commons.lang3.StringUtils.containsAny("aaaaaa", "aaaaaaa", "b"));
         System.out.println(org.apache.commons.lang3.StringUtils.containsAny("200", "500", "600"));
     }
-
-
+    */
 
     @org.junit.Test
-    public void test3(){
-        String[] cards = {"6217001210024455220", "6217001210024455221", "6228483868586908177", "6228483868586908178",
-                          "6214855716759598", "6228480322776602714"};
-        for(String card : cards){
+    public void test3() {
+        String[] cards = { "6217001210024455220", "6217001210024455221", "6228483868586908177", "6228483868586908178",
+                           "6214855716759598", "6228480322776602714" };
+        for (String card : cards) {
             System.out.println(card + ": " + matchLuhn(card));
         }
     }
 
     /**
      * 匹配Luhn算法：可用于检测银行卡卡号
+     * 
      * @param cardNo
      * @return
      */
     public static boolean matchLuhn(String cardNo) {
         int[] cardNoArr = new int[cardNo.length()];
-        for (int i=0; i<cardNo.length(); i++) {
+        for (int i = 0; i < cardNo.length(); i++) {
             cardNoArr[i] = Integer.valueOf(String.valueOf(cardNo.charAt(i)));
         }
-        for(int i=cardNoArr.length-2;i>=0;i-=2) {
+        for (int i = cardNoArr.length - 2; i >= 0; i -= 2) {
             cardNoArr[i] <<= 1;
-            cardNoArr[i] = cardNoArr[i]/10 + cardNoArr[i]%10;
+            cardNoArr[i] = cardNoArr[i] / 10 + cardNoArr[i] % 10;
         }
         int sum = 0;
-        for(int i=0;i<cardNoArr.length;i++) {
+        for (int i = 0; i < cardNoArr.length; i++) {
             sum += cardNoArr[i];
         }
         return sum % 10 == 0;

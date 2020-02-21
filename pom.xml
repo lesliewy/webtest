@@ -239,6 +239,7 @@
             </dependency>
             -->
             <!-- 本地jar配置, 有些jar maven仓库里没有 begin -->
+            <!--
             <dependency>
                 <groupId>com.dangdang</groupId>
                 <artifactId>elastic-job-spring</artifactId>
@@ -252,7 +253,7 @@
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
             </dependency>
-
+            -->
             <!-- end -->
         </dependencies>
     </dependencyManagement>

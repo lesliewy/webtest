@@ -74,6 +74,7 @@ public class Problem142 {
     /**
      * <pre>
      *     方法二: Floyd算法.
+     *     详解参考公众号: 算法与数据结构 2020.02.05
      * </pre>
      *
      * @param head
@@ -109,6 +110,7 @@ public class Problem142 {
     /**
      * <pre>
      *     快慢指针判断是否有环.
+     *
      * </pre>
      * 
      * @param head

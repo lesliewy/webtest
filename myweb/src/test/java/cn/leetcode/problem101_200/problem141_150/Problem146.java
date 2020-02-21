@@ -90,6 +90,8 @@ class LRUCache extends LinkedHashMap<Integer, Integer> {
 /**
  * <pre>
  *     方法二: hash表 + 双向链表.
+ *     hash 表用于O(1)时间内查找。
+ *     双向链表用于维护LRU.
  * </pre>
  */
 class LRUCache2 {
@@ -113,6 +115,11 @@ class LRUCache2 {
         head.next = node;
     }
 
+    /**
+     * 双向链表删除操作只需要O(1).
+     * 
+     * @param node
+     */
     private void removeNode(DLinkedNode node) {
         /**
          * Remove an existing node from the linked list.

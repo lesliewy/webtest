@@ -107,6 +107,7 @@ public class Problem2 {
         int maxLen = len1 > len2 ? len1 : len2;
 
         int c = 0;// 进位
+        // 补齐.
         if (len1 < len2) {
             for (int i = len1; i < len2; i++) {
                 n1 += "0";

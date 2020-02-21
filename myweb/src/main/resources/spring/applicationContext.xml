@@ -38,6 +38,7 @@
     <!-- ================================== api bean end ====================================== -->
 
     <!-- ================================== elastic job begin ====================================== -->
+    <!--
     <reg:zookeeper id="jobRegisterCenter" server-lists="127.0.0.1:2181" namespace="wy-elastic-job" base-sleep-time-milliseconds="1000" max-sleep-time-milliseconds="3000" max-retries="3" />
 
     <job:simple id="mySimpleJob" class="cn.wy.biz.service.elasticjob.MySimpleJob" registry-center-ref="jobRegisterCenter"
@@ -49,6 +50,6 @@
                 sharding-total-count="1"
                 sharding-item-parameters=""
                 description="测试" />
-
+    -->
     <!-- ================================== elastic job end ====================================== -->
 </beans>

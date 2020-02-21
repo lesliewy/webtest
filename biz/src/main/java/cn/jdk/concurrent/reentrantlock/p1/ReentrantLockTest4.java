@@ -5,9 +5,10 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * 获取锁限时等待的方法tryLock(),可以选择传入时间参数,表示等待指定的时间,无参则表示立即返回锁申请的结果:true表示获取锁成功,false表示获取锁失败。
- * tryLock()并不会将当前线程放入等待队列，只判断当前线程是否可以获得锁. 如果带时间, 是在等待队列无线循环等待中(doAcquireNanos) 判断是否到期.
- *
+ * <pre>
+ *    获取锁限时等待的方法tryLock(),可以选择传入时间参数,表示等待指定的时间,无参则表示立即返回锁申请的结果:true表示获取锁成功,false表示获取锁失败。
+ *    tryLock()并不会将当前线程放入等待队列，只判断当前线程是否可以获得锁. 如果带时间, 是在等待队列无线循环等待中(doAcquireNanos) 判断是否到期.
+ * </pre>
  * Created by leslie on 2019/11/16.
  */
 public class ReentrantLockTest4 {

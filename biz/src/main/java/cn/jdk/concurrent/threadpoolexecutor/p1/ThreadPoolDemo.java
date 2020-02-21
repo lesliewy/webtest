@@ -14,7 +14,8 @@ import java.util.concurrent.*;
  *     RUNNING -> SHUTDOWN：当调用了 shutdown() 后，会发生这个状态转换，这也是最重要的；
  *     (RUNNING or SHUTDOWN) -> STOP：当调用shutdownNow() 后，会发生这个状态转换，这下要清楚 shutDown() 和 shutDownNow() 的区别了；
  *     SHUTDOWN -> TIDYING：当任务队列和线程池都清空后，会由 SHUTDOWN 转换为 TIDYING；
- *     STOP -> TIDYING：当任务队列清空后，发生这个转换； TIDYING -> TERMINATED：这个前面说了，当 terminated() 方法结束后； Created by leslie on
+ *     STOP -> TIDYING：当任务队列清空后，发生这个转换； TIDYING -> TERMINATED：这个前面说了，当 terminated() 方法结束后；
+ *     Created by leslie on
  *     </pre>
  * 
  * 2019/11/19.
