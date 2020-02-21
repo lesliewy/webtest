@@ -1,0 +1,50 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>cookie应用</title>
+</head>
+<body>
+<input type="text" id="username"/>
+<input type="button" id="login" value="登录"/>
+<input type="button" id="delete" value="删除"/>
+</body>
+
+
+<script type="text/javascript">
+    var user = document.querySelector('#username');
+    var login = document.querySelector('#login');
+    var del = document.querySelector('#delete');
+    // 先打开页面，输入框中输入任意值后，点击登录，然后刷新页面，输入框中通过cookie 显示登录名。
+    if(getCookie('username')){
+        user.value = getCookie('username');
+    }
+    login.onclick = function(){
+        alert('登陆成功');
+        setCookie('username',user.value,5);
+    }
+    del.onclick = function(){
+        removeCookie('username');
+        user.value = '';
+    }
+    function setCookie(c_name,value,expiredays)
+    {
+        var exdate=new Date();
+        exdate.setDate(exdate.getDate()+expiredays);
+        document.cookie=c_name+ "=" +escape(value)+
+            ((expiredays==null) ? "" : ";expires="+exdate.toGMTString());
+    }
+    function getCookie(key){
+        var arr1 = document.cookie.split(';');
+        for(var i = 0;i< arr1.length;i++){
+            var arr2 = arr1[i].split('=');
+            if(arr2[0] == key){
+                return arr2[1];
+            }
+        }
+    }
+    function removeCookie(key){
+        setCookie(key,'',-1);
+    }
+    </script>
