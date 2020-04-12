@@ -8,12 +8,14 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 
     <!-- 启用spring mvc , 需添加扫描器. -->
     <!-- 配置注解驱动 可以将request参数绑定到controller参数上 -->
-    <mvc:annotation-driven />
-    <context:component-scan base-package="com.wy.myweb">
+    <mvc:annotation-driven/>
+    <context:component-scan base-package="com.wy">
     </context:component-scan>
 
     <!-- 静态资源访问  如果开启了springmvc 必须配置，否则无法访问静态资源. -->
     <mvc:resources mapping="/js/**" location="/statics/js/"/>
     <mvc:resources mapping="/image/**" location="/statics/images/"/>
+    <mvc:resources mapping="/view/**" location="/statics/view/"/>
     <!-- 设置使用注解的类所在的jar包 -->
+
 </beans>

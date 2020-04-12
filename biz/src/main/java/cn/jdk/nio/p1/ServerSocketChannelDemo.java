@@ -23,6 +23,7 @@ public class ServerSocketChannelDemo {
     }
 
     public static void handleAccept(SelectionKey key) throws IOException {
+        // 将选择器注册到连接到的客户端信道， 并指定该信道key值的属性为OP_READ， 同时为该信道指定关联的附件
         ServerSocketChannel ssChannel = (ServerSocketChannel) key.channel();
         SocketChannel sc = ssChannel.accept();
         sc.configureBlocking(false);
@@ -65,25 +66,23 @@ public class ServerSocketChannelDemo {
             ssc = ServerSocketChannel.open();
             ssc.socket().bind(new InetSocketAddress(PORT));
             /*
-             与Selector一起使用时，Channel必须处于非阻塞模式下。
-             这意味着不能将FileChannel与Selector一起使用，因为FileChannel不能切换到非阻塞模式。而套接字通道都可以。
+             * 与Selector一起使用时，Channel必须处于非阻塞模式下。 这意味着不能将FileChannel与Selector一起使用，因为FileChannel不能切换到非阻塞模式。而套接字通道都可以。
              */
             ssc.configureBlocking(false);
 
             /*
-             将要监听的channel注册到selector, 事件: OP_READ, OP_WRITE, OP_CONNECT, OP_ACCEPT
-
-             这里的READ, WRITE 都是针对channel来说的. READ表示要从channel中读, WRITE 表示要写入到channel
+             * 将要监听的channel注册到selector, 事件: OP_READ, OP_WRITE, OP_CONNECT, OP_ACCEPT 这里的READ, WRITE 都是针对channel来说的.
+             * READ表示要从channel中读, WRITE 表示要写入到channel
              */
             ssc.register(selector, SelectionKey.OP_ACCEPT);
             while (true) {
-                // select 会阻塞等待. 返回已就绪的IO操作的channel数量.
+                // select 会阻塞等待. 如果底层有socket准备好，返回已就绪的IO操作的socket数量.
                 if (selector.select(TIMEOUT) == 0) {
                     System.out.println("==");
                     continue;
                 }
                 /*
-                selectionKey 包含: interest集合, ready集合,  Channel,  Selector,  附加的对象（可选）
+                 * selectionKey 包含: interest集合, ready集合, Channel, Selector, 附加的对象（可选）
                  */
                 Iterator<SelectionKey> iter = selector.selectedKeys().iterator();
                 while (iter.hasNext()) {

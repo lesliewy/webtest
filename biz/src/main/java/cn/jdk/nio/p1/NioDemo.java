@@ -43,7 +43,7 @@ public class NioDemo {
             int bytesRead = fileChannel.read(buf);
             System.out.println(bytesRead);
             while (bytesRead != -1) {
-                // 调整position, limit位置, 准备读取数据. position 和 limit 之间的就是可以被读取的.
+                // 调整position, limit位置, 准备读取数据. position 和 limit 之间的就是可以被读取的. 也就是从写模式跳转到读模式.
                 buf.flip();
                 while (buf.hasRemaining()) {
                     // 从buffer中读出数据.

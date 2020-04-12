@@ -5,13 +5,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 /**
  * Created by leslie on 2019/11/27.
  */
 public class Initialization1 {
 
     public static void main(String[] args) {
-
+        map1();
     }
 
     /**
@@ -24,7 +26,7 @@ public class Initialization1 {
      * new HashMap(map); 这样就可以正常初始化了
      * </pre>
      */
-    public void map1() {
+    public static void map1() {
         Map<String, String> m = new HashMap<String, String>() {
 
             {
@@ -36,6 +38,9 @@ public class Initialization1 {
 
         };
         System.out.println(m);
+
+        // 输出对象中的属性，可用于自定义的对象上。
+        System.out.println(ToStringBuilder.reflectionToString(m));
     }
 
     public void map2() {
