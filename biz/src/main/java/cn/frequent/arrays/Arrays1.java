@@ -36,6 +36,8 @@ public class Arrays1 {
         a[0] = 0;
         a[1] = 1;
         List<Integer> b = Arrays.asList(a);
+        System.out.println(b);
+
         b.get(0);
         // UnsupportedOperationException, Arrays.asList()返回的是java.util.Arrays.ArrayList, Arrays 中静态类. 不能增删.
         // b.add(1);
@@ -45,6 +47,12 @@ public class Arrays1 {
         b.add(1);
 
         int[] c = new int[] { 1, 2 };
+
+        // 简写. 如果是对象，直接在() 内new YourObject(), "," 分隔.
+        List<Integer> c1 = Arrays.asList(
+                1,2,3
+        );
+        System.out.println(c1);
     }
 
     public static void asList2() {

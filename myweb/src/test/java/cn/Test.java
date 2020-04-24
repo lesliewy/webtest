@@ -1,7 +1,11 @@
 package cn;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by leslie on 2018/5/16.
@@ -56,6 +60,43 @@ public class Test {
             sum += cardNoArr[i];
         }
         return sum % 10 == 0;
+    }
+
+    @org.junit.Test
+    public void test4(){
+        Set<String> a = new HashSet<>();
+        a.add("/a/b/c_@");
+        a.add("/a/b/c_");
+        a.add("/a/b/c");
+        a.add("/a/b/c/d");
+        a.add("/a/b/caaa_@");
+        a.add("/a/b/caaa_@1");
+        a.add("/a/b/caaa_@81");
+        a.add("/");
+        a.add("/a");
+        System.out.println(a.stream().anyMatch(s -> s.split("_@")[0].equals("/a/b/c")));
+        System.out.println(a.stream().anyMatch(s -> s.split("_@")[0].equals("/a/b")));
+        System.out.println(a.stream().anyMatch(s -> s.split("_@")[0].equals("/a/b/caaa")));
+        System.out.println(a.stream().anyMatch(s -> s.split("_@")[0].equals("/a/b/caaa_")));
+//        System.out.println(a.contains("/a/b/c_@"));
+//        System.out.println(a.contains("/a/b/c_@1"));
+//        System.out.println(a.contains("/a/b/c"));
+//        System.out.println(a.contains("/a/b"));
+//        System.out.println(a.contains("/a"));
+
+        String url1 = "/a/b/caaa_@";
+        System.out.println(url1.split("_@")[0]);
+        url1 = "/a/b/caaa_@1";
+        System.out.println(url1.split("_@")[0]);
+        url1 = "/a/b/caaa_@123";
+        System.out.println(url1.split("_@")[0]);
+        url1 = "/a/b/c";
+        System.out.println(url1.split("_@")[0]);
+        url1 = "/";
+        System.out.println(url1.split("_@")[0]);
+        url1 = "/a/b/caaa_";
+        System.out.println(url1.split("_@")[0]);
+
     }
 
 }

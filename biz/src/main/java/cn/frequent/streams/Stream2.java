@@ -1,12 +1,11 @@
 package cn.frequent.streams;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.google.common.collect.Lists;
+import com.sun.tools.javac.util.Assert;
 import org.apache.commons.collections.CollectionUtils;
 
 /**
@@ -16,36 +15,90 @@ public class Stream2 {
 
     public static void main(String[] args) {
 
-        /*
-         * String[] strArr = new String[] { "aa", "bb", "cc" }; Stream<String> streamArr = Stream.of(strArr);
-         * Stream<String> streamArr2 = Arrays.stream(strArr); List<String> list = new ArrayList<>(); Stream<String>
-         * streamList = list.stream(); Map<String, String> map = new HashMap<String, String>() { { put("a", "b"); } };
-         * Stream stream = map.entrySet().stream(); Stream<String> streamList2 = list.parallelStream();
-         */
         Stream2 s2 = new Stream2();
+        // s2.testFilter1();
         // s2.testMap1();
-        s2.testFlatMap1();
+//        s2.testMap2();
+        // s2.testFlatMap1();
+
+        s2.testSorted1();
     }
 
-    // filter 过滤:
-    /**
-     * <pre>
-     * streamArr.filter(str -> str.startsWith("a"));
-     * list.stream().filter(student -> student.getSex().equals("G")).forEach(student -> System.out.println(student.toString()));
-     * List nums = Arrays.asList(1, 3, null, 8, 7, 8, 13, 10);
-     * nums.stream().filter(num -> num != null).distinct().forEach(System.out::println);
-     * Stream.of(1, 2, 3, 4, 5).filter(item -> item > 3).forEach(System.out::println);
-     * list.stream().filter(TestObject::isLeader).collect(Collectors.toList());
-     * 
-     * String result = maps.entrySet().stream().filter(map -> "something".equals(map.getValue())).map(map -> map.getValue()).collect(Collectors.joining());
-     * 
-     * // Map -> Stream -> Filter -> MAP
-     * Map<Integer, String> collect = maps.entrySet().stream().filter(map -> map.getKey() == 2).collect(Collectors.toMap(p -> p.getKey(),
-     *                                                                                                                   p -> p.getValue()));
-     * </pre>
-     */
+    class Student {
 
-    // map 遍历和转换操作
+        private String name;
+
+        private String sex;
+
+        public Student(String sex){
+            this.sex = sex;
+        }
+
+        public Student(String name, String sex){
+            this.name = name;
+            this.sex = sex;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getSex() {
+            return sex;
+        }
+
+        public void setSex(String sex) {
+            this.sex = sex;
+        }
+
+        @Override
+        public String toString() {
+            return "name: " + name + "; sex: " + sex;
+        }
+    }
+
+    /**
+     * filter 过滤:
+     */
+    private void testFilter1() {
+        String[] strArr = new String[] { "aa", "bb", "cc" };
+        Stream<String> streamArr = Stream.of(strArr);
+        streamArr.filter(str -> str.startsWith("a")).forEach(System.out::println);
+
+        List<Student> list = Arrays.asList(new Student("G"), new Student("G"), new Student("M"));
+        list.stream().filter(student -> student.getSex().equals("G")).forEach(student -> System.out.println(student.toString()));
+
+        List nums = Arrays.asList(1, 3, null, 8, 7, 8, 13, 10);
+        nums.stream().filter(num -> num != null).distinct().forEach(System.out::println);
+        Stream.of(1, 2, 3, 4, 5).filter(item -> item > 3).forEach(System.out::println);
+
+        /*
+         * list.stream().filter(TestObject::isLeader).collect(Collectors.toList()); String result =
+         * maps.entrySet().stream().filter(map -> "something".equals(map.getValue())).map(map ->
+         * map.getValue()).collect(Collectors.joining());
+         */
+
+        // Map -> Stream -> Filter -> MAP
+        Map<Integer, String> maps = new HashMap() {
+
+            {
+                put(1, "a");
+                put(2, "b");
+                put(3, "c");
+            }
+        };
+        Map<Integer, String> collect = maps.entrySet().stream().filter(map -> map.getKey() == 2).collect(Collectors.toMap(p -> p.getKey(),
+                                                                                                                          p -> p.getValue()));
+        System.out.println(collect);
+    }
+
+    /**
+     * map 遍历和转换操作
+     */
     private void testMap1() {
         String[] strArr = new String[] { "aa", "bb", "cc" };
         Stream<String> streamArr = Stream.of(strArr);
@@ -60,11 +113,34 @@ public class Stream2 {
 
         // 获取对象中的某个属性, 可以多个map对属性进行转换, 最后组装成list.
         list.stream().map(TestObject::getName).collect(Collectors.toList()).forEach(System.out::println);
+        System.out.println("======");
         list.stream().map(TestObject::getName).map(String::length).collect(Collectors.toList()).forEach(System.out::println);
+        System.out.println("======");
         Stream.of("a", "b", "hello").map(item -> item.toUpperCase()).forEach(System.out::println);
+        System.out.println("======");
 
         List<Integer> nums = Arrays.asList(1, 2, 3, 4);
         List<Integer> squareNums = nums.stream().map(n -> n * n).collect(Collectors.toList());
+        System.out.println(squareNums);
+    }
+
+    private void testMap2() {
+        // List<Student> 提取其中的sex 信息, Map<name, sex>
+        List<Student> students = Arrays.asList(new Student("wang", "M"), new Student("zhang", "M"),
+                                               new Student("chen", "F"));
+        Map<String, String> sexMap = students.stream().collect(Collectors.toMap(s -> s.getName(), s -> s.getSex()));
+        System.out.println(sexMap);
+
+
+        /*
+         * List<Student> 修改某个Student的sex 信息, 最后一定要加collect, 否则修改不成功.
+         * map() 需要返回值.
+         */
+        students.stream().filter(s -> s.getName().equals("wang")).map(s -> {
+            s.setSex("F");
+            return null;
+        }).collect(Collectors.toList());
+        students.stream().forEach(s -> System.out.println(s));
     }
 
     // flatMap 将流展开
@@ -146,6 +222,22 @@ public class Stream2 {
      */
 
     // sorted.
+    private void testSorted1(){
+        List<TestObject> humans = Lists.newArrayList(new TestObject("Sarah", 10), new TestObject("Jack", 12));
+        Collections.sort(humans, Comparator.comparing(TestObject::getName));
+        humans.stream().forEach(s -> System.out.println(s));
+
+        System.out.println("=============");
+        Collections.sort(humans, Comparator.comparing(TestObject::getName).reversed());
+        humans.stream().forEach(s -> System.out.println(s));
+
+        System.out.println("=============");
+        humans.sort((h1, h2) -> h1.getName().compareTo(h2.getName()));
+        humans.stream().forEach(s -> System.out.println(s));
+        System.out.println("=============");
+        humans.sort((h1, h2) -> h2.getName().compareTo(h1.getName()));
+        humans.stream().forEach(s -> System.out.println(s));
+    }
 
     /**
      * <pre>
@@ -230,6 +322,11 @@ public class Stream2 {
 
         public void setGoods(List<GoodInfo> goods) {
             this.goods = goods;
+        }
+
+        @Override
+        public String toString() {
+            return "name: " + name + "; age: " + age;
         }
     }
 
