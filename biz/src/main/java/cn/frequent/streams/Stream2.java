@@ -4,9 +4,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.google.common.collect.Lists;
-import com.sun.tools.javac.util.Assert;
 import org.apache.commons.collections.CollectionUtils;
+
+import com.google.common.collect.Lists;
 
 /**
  * Created by leslie on 2019/12/22.
@@ -18,10 +18,13 @@ public class Stream2 {
         Stream2 s2 = new Stream2();
         // s2.testFilter1();
         // s2.testMap1();
-//        s2.testMap2();
+        // s2.testMap2();
         // s2.testFlatMap1();
 
-        s2.testSorted1();
+        // s2.testSorted1();
+        // s2.testDistinct();
+//        s2.testLimit();
+        s2.testPeek();
     }
 
     class Student {
@@ -131,10 +134,8 @@ public class Stream2 {
         Map<String, String> sexMap = students.stream().collect(Collectors.toMap(s -> s.getName(), s -> s.getSex()));
         System.out.println(sexMap);
 
-
         /*
-         * List<Student> 修改某个Student的sex 信息, 最后一定要加collect, 否则修改不成功.
-         * map() 需要返回值.
+         * List<Student> 修改某个Student的sex 信息, 最后一定要加collect, 否则修改不成功. map() 需要返回值.
          */
         students.stream().filter(s -> s.getName().equals("wang")).map(s -> {
             s.setSex("F");
@@ -192,102 +193,88 @@ public class Stream2 {
 
         String foo;
     }
-    /*
-     * <pre> // limit 提取子流 最大长度限制 streamArr.limit(1); Stream.of(1, 2, 3, 4, 5).limit(2).forEach(System.out::println); //
-     * 打印结果 1,2 // skip 跳过 streamArr.skip(1); Stream.of(1, 2, 3, 4, 5).skip(2).forEach(System.out::println); // 打印结果
-     * 3,4,5 // peek 产生相同的流，支持每个元素调用一个函数 streamArr.peek(str -> System.out.println("item:" + str)); Stream.of(1, 2, 3, 4,
-     * 5).peek(integer -> System.out.println("accept:" + integer)).forEach(System.out::println);
-     */
-    // 打印结果: accept:1
-    // 1
-    // accept:2
-    // 2
-    // accept:3
-    // 3
-    // accept:4
-    // 4
-    // accept:5
-    // 5
 
-    // distinct 去重
+    private void testLimit() {
+        // limit 提取子流 最大长度限制
+        Stream.of(1, 2, 3, 4, 5).limit(2).forEach(System.out::println);
+    }
+
     /**
-     * <pre>
-     * Stream.of("aa", "bb", "aa").distinct();
-     * Stream.of(1, 2, 3, 1, 2, 3).distinct().forEach(System.out::println); // 打印结果：1，2，3
-     * 
-     * // 根据id去重
-     * List<Person> unique = appleList.stream().collect(collectingAndThen(toCollection(() -> new TreeSet<>(comparingLong(Apple::getId))),
-     *                                                                    ArrayList::new));
-     * </pre>
+     * peek(): 中间操作. peek 的参数是Cosumer，是不带返回值的, 对stream中的元素进行某些操作，操作之后并不放回stream中。
+     * map(): 也是中间操作，参数是Function, 是带返回值, 对stream中的元素操作后会放回stream中.
      */
+    private void testPeek() {
+        // peek 产生相同的流，支持每个元素调用一个函数
+        System.out.println("1. ================");
+        String[] strArr = new String[] { "aa", "bb", "cc" };
+        Stream<String> streamArr = Stream.of(strArr);
+        // 并不会变成大写, map 可以.
+//        streamArr.peek(u -> u.toUpperCase()).forEach(System.out::println);
+        streamArr.map(u -> u.toUpperCase()).forEach(System.out::println);
 
-    // sorted.
-    private void testSorted1(){
+        // peek 主要用于debug, 在终止操作前输出中间值.
+        System.out.println("2. ================");
+        Stream.of("one", "two", "three","four").filter(e -> e.length() > 3)
+                .peek(e -> System.out.println("Filtered value: " + e))
+                .map(String::toUpperCase)
+                .peek(e -> System.out.println("Mapped value: " + e))
+                .collect(Collectors.toList());
+    }
+
+    private void testDistinct() {
+        Stream.of("aa", "bb", "aa").distinct();
+        Stream.of(1, 2, 3, 1, 2, 3).distinct().forEach(System.out::println);
+
+        // 根据id去重
+        // List<Person> unique = appleList.stream().collect(collectingAndThen(toCollection(() -> new
+        // TreeSet<>(comparingLong(Apple::getId))),ArrayList::new));
+    }
+
+    /**
+     * sorted 按照list 中对象的某个属性对list排序.
+     */
+    private void testSorted1() {
+        System.out.println("1 =============");
         List<TestObject> humans = Lists.newArrayList(new TestObject("Sarah", 10), new TestObject("Jack", 12));
         Collections.sort(humans, Comparator.comparing(TestObject::getName));
         humans.stream().forEach(s -> System.out.println(s));
 
-        System.out.println("=============");
+        // 反转排序
+        System.out.println("2 =============");
         Collections.sort(humans, Comparator.comparing(TestObject::getName).reversed());
         humans.stream().forEach(s -> System.out.println(s));
 
-        System.out.println("=============");
+        System.out.println("3 =============");
         humans.sort((h1, h2) -> h1.getName().compareTo(h2.getName()));
         humans.stream().forEach(s -> System.out.println(s));
-        System.out.println("=============");
+
+        // 反转排序
+        System.out.println("4 =============");
         humans.sort((h1, h2) -> h2.getName().compareTo(h1.getName()));
         humans.stream().forEach(s -> System.out.println(s));
+
+        // 反转排序
+        System.out.println("5 =============");
+        Comparator<TestObject> comparator = (h1, h2) -> h1.getName().compareTo(h2.getName());
+        humans.sort(comparator.reversed());
+        humans.stream().forEach(s -> System.out.println(s));
+
+        // 多条件排序
+        System.out.println("6 =============");
+        humans.add(new TestObject("Sarah", 11));
+        humans.sort((lhs, rhs) -> {
+            if (lhs.getName().equals(rhs.getName())) {
+                return lhs.getAge() - rhs.getAge();
+            } else {
+                return lhs.getName().compareTo(rhs.getName());
+            }
+        });
+        humans.stream().forEach(s -> System.out.println(s));
+        System.out.println("7 =============");
+        humans.sort(Comparator.comparing(TestObject::getAge).thenComparing(TestObject::getName));
+        humans.stream().forEach(System.out::println);
+
     }
-
-    /**
-     * <pre>
-     *
-     * List<Human> humans = Lists.newArrayList(new Human("Sarah", 10), new Human("Jack", 12));
-     * Collections.sort(humans, Comparator.comparing(Human::getName));
-     * Assert.assertThat(humans.get(0), equalTo(new Human("Jack", 12)));
-     * humans.sort((h1, h2) -> h1.getName().compareTo(h2.getName()));
-     * </pre>
-     */
-
-    // 反转排序
-    /**
-     * <pre>
-     * Comparator<Human> comparator = (h1, h2) -> h1.getName().compareTo(h2.getName());
-     * humans.sort(comparator.reversed());
-     * </pre>
-     */
-
-    // 多条件排序.
-    /**
-     * <pre>
-     * humans.sort((lhs, rhs) -> {
-     *     if (lhs.getName().equals(rhs.getName())) {
-     *         return lhs.getAge() - rhs.getAge();
-     *     } else {
-     *         return lhs.getName().compareTo(rhs.getName());
-     *     }
-     * });
-     * Assert.assertThat(humans.get(0), equalTo(new Human("Sarah", 10)));
-     * </pre>
-     */
-
-    // 多条件组合排序.
-    /**
-     * <pre>
-     *
-     * humans.sort(Comparator.comparing(Human::getName).thenComparing(Human::getAge));
-     * Assert.assertThat(humans.get(0), equalTo(new Human("Sarah", 10)));
-     * students.sort((Student s1, Student s2) -> {
-     *     return Integer.compare(s1.getHeight(), s2.getHeight());
-     * });
-     * students.sort((s1, s2) -> Integer.compare(s1.getHeight(), s2.getHeight()));
-     * students.sort(Comparator.comparingDouble(Student::getScore));
-     * Stream.of("aaa", "bb", "c").sorted(Comparator.comparing(String::length).reversed());
-     * 
-     * Stream.of(1, 2, 3, 4, 5).sorted().forEach(System.out::println);
-     * // 打印结果 5, 4, 3, 2, 1
-     * </pre>
-     */
 
     class TestObject {
 

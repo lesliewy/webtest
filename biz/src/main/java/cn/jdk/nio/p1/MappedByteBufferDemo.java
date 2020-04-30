@@ -1,10 +1,10 @@
 package cn.jdk.nio.p1;
 
-import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.util.Scanner;
 
 /**
  * <pre>
@@ -20,13 +20,14 @@ import java.nio.channels.FileChannel;
  */
 public class MappedByteBufferDemo {
 
-    public static void method4() {
+    public static void method1() {
         RandomAccessFile aFile = null;
         FileChannel fc = null;
         try {
             aFile = new RandomAccessFile("src/1.ppt", "rw");
             fc = aFile.getChannel();
             long timeBegin = System.currentTimeMillis();
+            // 分配的内存并不在堆中，而是直接内存.
             ByteBuffer buff = ByteBuffer.allocate((int) aFile.length());
             buff.clear();
             fc.read(buff);
@@ -51,7 +52,7 @@ public class MappedByteBufferDemo {
         }
     }
 
-    public static void method3() {
+    public static void method2() {
         RandomAccessFile aFile = null;
         FileChannel fc = null;
         try {
@@ -77,6 +78,28 @@ public class MappedByteBufferDemo {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    /**
+     * mapped + write 方式实现零拷贝.
+     * @throws IOException
+     */
+    public static void method3() throws IOException {
+        File file = new File("D://db.txt");
+        long len = file.length();
+        byte[] ds = new byte[(int) len];
+        // position: 表示从文件的哪个位置开始映射。
+        MappedByteBuffer mappedByteBuffer = new FileInputStream(file).getChannel().map(FileChannel.MapMode.READ_ONLY, 0,
+                                                                                       len);
+        for (int offset = 0; offset < len; offset++) {
+            // get() 从磁盘中读取数据. put()方法修改文件.
+            byte b = mappedByteBuffer.get();
+            ds[offset] = b;
+        }
+        Scanner scan = new Scanner(new ByteArrayInputStream(ds)).useDelimiter(" ");
+        while (scan.hasNext()) {
+            System.out.print(scan.next() + " ");
         }
     }
 }

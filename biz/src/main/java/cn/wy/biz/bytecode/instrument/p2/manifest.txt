@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Agent-Class: cn.wy.biz.bytecode.instrument.p2.TraceAgent
+Created-By: 11.0.5 (Oracle Corporation)
+Can-Redefine-Classes: true
+Can-Retransform-Classes: true
