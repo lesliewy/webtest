@@ -15,9 +15,18 @@
 	                       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd"
        default-autowire="byName">
 
-    <context:annotation-config/>
+    <!-- 启用spring mvc , 可以将request参数绑定到controller参数上。 需添加扫描器, 否则无法访问controller, 而且扫描器必须和mvn:annotation-driven 在同一xml中(也可能是只需要在同级applicationContext
+   中, applicationContext.xml 是 spring-servlet.xml 的parent, 就不能将 <mvc:annotation-driven>放在spring-servlet.xml, <component-scan>放在applicationContext.xml中 -->
+    <mvc:annotation-driven/>
     <context:component-scan base-package="com.wy">
     </context:component-scan>
+
+    <!-- 静态资源访问  如果开启了springmvc 必须配置，否则无法访问静态资源. -->
+    <mvc:resources mapping="/js/**" location="/statics/js/"/>
+    <mvc:resources mapping="/image/**" location="/statics/images/"/>
+    <mvc:resources mapping="/view/**" location="/statics/view/"/>
+
+    <context:annotation-config/>
 
 
     <!--通知spring使用cglib而不是jdk的来生成代理方法-->
@@ -28,14 +37,16 @@
 
     <!-- ================================== 引入配置文件 ====================================== -->
     <context:property-placeholder location="classpath:properties/*.properties"/>
+    <!--
     <import resource="classpath:springmvc-resteasy.xml"/>
+    -->
     <import resource="classpath:spring/aop/xmlaop.xml"/>
     <!--
     <import resource="classpath:dubbo/dubbo.xml" />
     -->
 
     <!-- ================================== api bean begin ====================================== -->
-    <bean id="restService" class="com.wy.myweb.restful.RestImpl"/>
+    <bean id="restService" class="com.wy.myweb.restful.resteasy.RestImpl"/>
     <!-- ================================== api bean end ====================================== -->
 
     <!-- ================================== elastic job begin ====================================== -->
@@ -53,6 +64,7 @@
                 description="测试" />
     -->
     <!-- ================================== elastic job end ====================================== -->
+
 
     <!-- ================================== interceptor begin ====================================== -->
     <mvc:interceptors>

@@ -7,6 +7,7 @@
         <welcome-file>login.htm</welcome-file>
     </welcome-file-list>
 
+    <!-- 如果不指定，默认会去找 WEB-INF/applicationContext.xml -->
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>classpath:spring/applicationContext.xml</param-value>
@@ -18,6 +19,7 @@
     <servlet>
         <servlet-name>spring</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <!-- 这里如果不指定，默认会去找 WEB-INF/spring-servlet.xml -->
         <init-param>
             <param-name>contextConfigLocation</param-name>
             <param-value>classpath:spring/spring-servlet.xml</param-value>
@@ -75,28 +77,14 @@
             <param-value>HelloFilter2's user</param-value>
         </init-param>
     </filter>
-    <filter>
-        <filter-name>HelloFilter3</filter-name>
-        <filter-class>
-            com.wy.myweb.filter.HelloFilter3
-        </filter-class>
-        <init-param>
-            <param-name>user</param-name>
-            <param-value>HelloFilter3's user</param-value>
-        </init-param>
-    </filter>
 
     <!-- 针对URL Pattern做过滤 也可以针对servlet做过滤 -->
     <filter-mapping>
-        <filter-name>HelloFilter </filter-name>
+        <filter-name>HelloFilter</filter-name>
         <url-pattern>/myweb/*</url-pattern>
     </filter-mapping>
     <filter-mapping>
-        <filter-name>HelloFilter2 </filter-name>
-        <url-pattern>/myweb/*</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>HelloFilter3 </filter-name>
+        <filter-name>HelloFilter2</filter-name>
         <url-pattern>/myweb/*</url-pattern>
     </filter-mapping>
     <!-- end: 自定义 filter -->

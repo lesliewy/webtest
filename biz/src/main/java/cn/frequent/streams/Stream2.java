@@ -7,6 +7,7 @@ import java.util.stream.Stream;
 import org.apache.commons.collections.CollectionUtils;
 
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Created by leslie on 2019/12/22.
@@ -21,10 +22,10 @@ public class Stream2 {
         // s2.testMap2();
         // s2.testFlatMap1();
 
-        // s2.testSorted1();
+        s2.testSorted1();
         // s2.testDistinct();
-//        s2.testLimit();
-        s2.testPeek();
+        // s2.testLimit();
+        // s2.testPeek();
     }
 
     class Student {
@@ -200,8 +201,8 @@ public class Stream2 {
     }
 
     /**
-     * peek(): 中间操作. peek 的参数是Cosumer，是不带返回值的, 对stream中的元素进行某些操作，操作之后并不放回stream中。
-     * map(): 也是中间操作，参数是Function, 是带返回值, 对stream中的元素操作后会放回stream中.
+     * peek(): 中间操作. peek 的参数是Cosumer，是不带返回值的, 对stream中的元素进行某些操作，操作之后并不放回stream中。 map(): 也是中间操作，参数是Function, 是带返回值,
+     * 对stream中的元素操作后会放回stream中.
      */
     private void testPeek() {
         // peek 产生相同的流，支持每个元素调用一个函数
@@ -209,16 +210,15 @@ public class Stream2 {
         String[] strArr = new String[] { "aa", "bb", "cc" };
         Stream<String> streamArr = Stream.of(strArr);
         // 并不会变成大写, map 可以.
-//        streamArr.peek(u -> u.toUpperCase()).forEach(System.out::println);
+        // streamArr.peek(u -> u.toUpperCase()).forEach(System.out::println);
         streamArr.map(u -> u.toUpperCase()).forEach(System.out::println);
 
         // peek 主要用于debug, 在终止操作前输出中间值.
         System.out.println("2. ================");
-        Stream.of("one", "two", "three","four").filter(e -> e.length() > 3)
-                .peek(e -> System.out.println("Filtered value: " + e))
-                .map(String::toUpperCase)
-                .peek(e -> System.out.println("Mapped value: " + e))
-                .collect(Collectors.toList());
+        Stream.of("one", "two", "three",
+                  "four").filter(e -> e.length() > 3).peek(e -> System.out.println("Filtered value: "
+                                                                                   + e)).map(String::toUpperCase).peek(e -> System.out.println("Mapped value: "
+                                                                                                                                               + e)).collect(Collectors.toList());
     }
 
     private void testDistinct() {
@@ -245,8 +245,16 @@ public class Stream2 {
         humans.stream().forEach(s -> System.out.println(s));
 
         System.out.println("3 =============");
-        humans.sort((h1, h2) -> h1.getName().compareTo(h2.getName()));
-        humans.stream().forEach(s -> System.out.println(s));
+        List<TestObject> humans4Order = new ArrayList<>(humans);
+        humans4Order.add(new TestObject(null, 22));
+
+        // List<TestObject> humansFiltered = humans4Order.stream().filter(h ->
+        // StringUtils.isNotBlank(h.getName())).collect(Collectors.toList());
+        // humansFiltered.sort((h1, h2) -> h1.getName().compareTo(h2.getName()));
+        // humansFiltered.stream().forEach(s -> System.out.println(s));
+
+        humans4Order.sort((h1, h2) -> StringUtils.isBlank(h1.getName())? 0 : h1.getName().compareTo(h2.getName()));
+        humans4Order.stream().forEach(s -> System.out.println(s));
 
         // 反转排序
         System.out.println("4 =============");

@@ -1,4 +1,4 @@
-package com.wy.myweb.restful;
+package com.wy.myweb.restful.resteasy;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

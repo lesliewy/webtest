@@ -6,16 +6,15 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-    <!-- 启用spring mvc , 需添加扫描器. -->
-    <!-- 配置注解驱动 可以将request参数绑定到controller参数上 -->
-    <mvc:annotation-driven/>
-    <context:component-scan base-package="com.wy">
-    </context:component-scan>
+    <!--
+       web.xml 中指定的spring-servlet.xml, applicationContext.xml 两个配置文件, 会影响到某些配置.
+       比如interceptor的配置: spring-servlet.xml 中 配置了mvc:annotation-driven, 再在applicationContext.xml 使用<mvc:interceptors> 来配置拦截器，这里配置的就会不生效。
+       原因是spring-servlet.xml 解析为xmlWebApplicationContext, 其parent是applicationContext.xml. 在spring-servlet.xml 中配置的某些标签会默认添加拦截器, 放入handlerMapping中,
+       key为: org.springframework.web.servlet.handler.MappedInterceptor#0.  解析applictionContext.xml也从#0开始，同名的不会添加到handlerMapping中, 也就不会添加到handlerExecutionChain中.
+       org.springframework.web.servlet.handler.AbstractHandlerMapping.detectMappedInterceptors  breakpoint 观察.
+       可以把所有的配置移到applictionContext.xml中.
+     -->
 
-    <!-- 静态资源访问  如果开启了springmvc 必须配置，否则无法访问静态资源. -->
-    <mvc:resources mapping="/js/**" location="/statics/js/"/>
-    <mvc:resources mapping="/image/**" location="/statics/images/"/>
-    <mvc:resources mapping="/view/**" location="/statics/view/"/>
-    <!-- 设置使用注解的类所在的jar包 -->
+
 
 </beans>

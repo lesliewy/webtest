@@ -11,6 +11,7 @@ import org.springframework.web.servlet.view.JstlView;
 @Configuration
 public class WebConfig {
 
+    /*
     @Bean
     public InternalResourceViewResolver viewResolver() {
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
@@ -20,4 +21,5 @@ public class WebConfig {
 
         return viewResolver;
     }
+    */
 }
