@@ -1,11 +1,20 @@
 package cn;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.math.BigDecimal;
+import java.security.KeyFactory;
+import java.security.MessageDigest;
+import java.security.PrivateKey;
+import java.security.Timestamp;
+import java.security.spec.PKCS8EncodedKeySpec;
 import java.text.DecimalFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.crypto.Cipher;
+
+import org.apache.commons.codec.binary.Base64;
 
 /**
  * Created by leslie on 2018/5/16.
@@ -24,12 +33,10 @@ public class Test {
     }
 
     /*
-    @org.junit.Test
-    public void test2() {
-        System.out.println(org.apache.commons.lang3.StringUtils.containsAny("aaaaaa", "aaaaaaa", "b"));
-        System.out.println(org.apache.commons.lang3.StringUtils.containsAny("200", "500", "600"));
-    }
-    */
+     * @org.junit.Test public void test2() {
+     * System.out.println(org.apache.commons.lang3.StringUtils.containsAny("aaaaaa", "aaaaaaa", "b"));
+     * System.out.println(org.apache.commons.lang3.StringUtils.containsAny("200", "500", "600")); }
+     */
 
     @org.junit.Test
     public void test3() {
@@ -63,7 +70,7 @@ public class Test {
     }
 
     @org.junit.Test
-    public void test4(){
+    public void test4() {
         Set<String> a = new HashSet<>();
         a.add("/a/b/c_@");
         a.add("/a/b/c_");
@@ -78,11 +85,11 @@ public class Test {
         System.out.println(a.stream().anyMatch(s -> s.split("_@")[0].equals("/a/b")));
         System.out.println(a.stream().anyMatch(s -> s.split("_@")[0].equals("/a/b/caaa")));
         System.out.println(a.stream().anyMatch(s -> s.split("_@")[0].equals("/a/b/caaa_")));
-//        System.out.println(a.contains("/a/b/c_@"));
-//        System.out.println(a.contains("/a/b/c_@1"));
-//        System.out.println(a.contains("/a/b/c"));
-//        System.out.println(a.contains("/a/b"));
-//        System.out.println(a.contains("/a"));
+        // System.out.println(a.contains("/a/b/c_@"));
+        // System.out.println(a.contains("/a/b/c_@1"));
+        // System.out.println(a.contains("/a/b/c"));
+        // System.out.println(a.contains("/a/b"));
+        // System.out.println(a.contains("/a"));
 
         String url1 = "/a/b/caaa_@";
         System.out.println(url1.split("_@")[0]);
@@ -100,7 +107,7 @@ public class Test {
     }
 
     @org.junit.Test
-    public void test5(){
+    public void test5() {
         String str1 = new StringBuilder("计算机").append("软件").toString();
         System.out.println(str1.intern() == str1);
 

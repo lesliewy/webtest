@@ -8,7 +8,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 
     <!--
        web.xml 中指定的spring-servlet.xml, applicationContext.xml 两个配置文件, 会影响到某些配置.
-       比如interceptor的配置: spring-servlet.xml 中 配置了mvc:annotation-driven, 再在applicationContext.xml 使用<mvc:interceptors> 来配置拦截器，这里配置的就会不生效。
+       比如interceptor的配置: spring-servlet.xml 中 配置了mvc:annotation-driven, 再在applicationContext.xml 使用<mvc:interceptors> 来配置拦截器，这里配置的拦截器就会不生效。
        原因是spring-servlet.xml 解析为xmlWebApplicationContext, 其parent是applicationContext.xml. 在spring-servlet.xml 中配置的某些标签会默认添加拦截器, 放入handlerMapping中,
        key为: org.springframework.web.servlet.handler.MappedInterceptor#0.  解析applictionContext.xml也从#0开始，同名的不会添加到handlerMapping中, 也就不会添加到handlerExecutionChain中.
        org.springframework.web.servlet.handler.AbstractHandlerMapping.detectMappedInterceptors  breakpoint 观察.
