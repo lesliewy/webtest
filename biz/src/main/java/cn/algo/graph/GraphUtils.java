@@ -6,7 +6,7 @@ import java.util.*;
  * Created by leslie on 2019/8/30.
  */
 public class GraphUtils {
-    //广度优先 非递归
+    // BFS 广度优先 非递归
     public static void BFS(Graph graph) {
         ArrayList<Graph.Vertex> vertexs = graph.vertexs;
         ArrayList<Graph.Edge> edges = graph.edges;
@@ -28,7 +28,7 @@ public class GraphUtils {
         }
     }
 
-    //深度优先 递归
+    //DFS 深度优先 递归
     public static void DFS(Graph graph, Graph.Vertex vertex) {  //参数：图、点信息
         System.out.print(vertex);
         vertex.visited2 = true;

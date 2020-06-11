@@ -11,12 +11,14 @@ public class BinarySearch {
         }
         int low = 0;
         int high = array.length - 1;
+        // <= 因为high取值 length - 1; 如果直接小于的话，最后一个high 就没有被搜索.
         while (low <= high) {
             int middle = (low + high) >> 1;
             if (value == array[middle]) {
                 return middle;
             }
             if (value > array[middle]) {
+                // mid + 1, 而不用mid, 因为mid已经被搜索过了.
                 low = middle + 1;
             }
             if (value < array[middle]) {
@@ -25,7 +27,6 @@ public class BinarySearch {
         }
         return -1;
     }
-
 
     /**
      * <pre>
@@ -86,10 +87,10 @@ public class BinarySearch {
             } else if (midVal > value) {
                 hi = mid - 1;
             } else {
-                return mid;  // value found
+                return mid; // value found
             }
         }
-        return ~lo;  // value not present
+        return ~lo; // value not present
     }
 
     /**
@@ -120,5 +121,58 @@ public class BinarySearch {
             return searchmy(array, low, mid - 1, value);
         }
         return searchmy(array, mid + 1, high, value);
+    }
+
+    /**
+     * 搜索左侧边界的下标. [1,2,2,2,2,3], 返回1，即第一个2的下标. 即使没有找到，也不会返回-1。 返回的left表示小于target的个数.
+     * 
+     * @param nums
+     * @param target
+     * @return
+     */
+    public static int leftBoundSearch(int[] nums, int target) {
+        if (nums.length == 0) {
+            return -1;
+        }
+        int left = 0;
+        int right = nums.length; // 注意
+
+        while (left < right) { // 注意
+            int mid = (left + right) / 2;
+            if (nums[mid] == target) {
+                right = mid;
+            } else if (nums[mid] < target) {
+                left = mid + 1;
+            } else if (nums[mid] > target) {
+                right = mid; // 注意
+            }
+        }
+        return left;
+    }
+
+    /**
+     * 搜索右侧边界.
+     *
+     * @param nums
+     * @param target
+     * @return
+     */
+    public static int rightBoundSearch(int[] nums, int target) {
+        if (nums.length == 0) {
+            return -1;
+        }
+        int left = 0, right = nums.length;
+
+        while (left < right) {
+            int mid = (left + right) / 2;
+            if (nums[mid] == target) {
+                left = mid + 1; // 注意
+            } else if (nums[mid] < target) {
+                left = mid + 1;
+            } else if (nums[mid] > target) {
+                right = mid;
+            }
+        }
+        return left - 1; // 注意
     }
 }
