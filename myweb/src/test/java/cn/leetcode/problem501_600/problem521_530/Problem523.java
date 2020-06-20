@@ -8,6 +8,7 @@ import org.junit.Test;
 /**
  * <pre>
  *     给定一个包含非负数的数组和一个目标整数 k，编写一个函数来判断该数组是否含有连续的子数组，其大小至少为 2，总和为 k 的倍数，即总和为 n*k，其中 n 也是一个整数。
+ *
        示例 1:
        输入: [23,2,4,6,7], k = 6
        输出: True
@@ -17,6 +18,7 @@ import org.junit.Test;
  输入: [23,2,6,4,7], k = 6
  输出: True
  解释: [23,2,6,4,7]是大小为 5 的子数组，并且和为 42。
+
  说明:
  数组的长度不会超过10,000。
  你可以认为所有数字总和在 32 位有符号整数范围内
@@ -123,5 +125,72 @@ public class Problem523 {
             } else map.put(sum, i);
         }
         return false;
+    }
+
+
+    /**
+     * 方法三: 动态规划.
+     * 构造一个二维整数数组dp[nums.length-1][nums.length-1]
+     nums={23,2,6,4,7}
+     dp[0][0]=23+2;
+     dp[1][0]=23+2+6,dp[1][1]=2+6;
+     dp[2][0]=23+2+6+4,dp[2][1]=2+6+4,dp[2][2]=6+4;
+     dp[3][0]=23+2+6+4+7,dp[3][1]=2+6+4+7,dp[3][2]=6+4+7,dp[3][3]=4+7;
+     首先将dp[0][0]=nums[0]+nums[1]加入数组。
+     对于dp[i][j]:
+     1.i>j,dp[i][j]=dp[i-1][j]+nums[i+1];
+     2.i=j,dp[i][j]=nums[i]+nums[i+1];
+     只要存在dp[i][j]%k==0,即返回true;
+
+     * @param nums
+     * @param k
+     * @return
+     */
+    public boolean checkSubarraySum4(int[] nums, int k) {
+        if(nums.length<=1){
+            return false;
+        }else{
+            if(k==0){
+                int len=nums.length-1;
+                int[][] dp=new int[len][len];
+                dp[0][0]=nums[0]+nums[1];
+                if(dp[0][0]==0){
+                    return true;
+                }
+                for(int i=0;i<len;i++){
+                    for(int j=0;j<=i;j++){
+                        if(i!=j){
+                            dp[i][j]=dp[i-1][j]+nums[i+1];
+                        }else{
+                            dp[i][j]=nums[i]+nums[i+1];
+                        }
+                        if(dp[i][j]==0){
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }else{
+                int len=nums.length-1;
+                int[][] dp=new int[len][len];
+                dp[0][0]=nums[0]+nums[1];
+                if(dp[0][0]%k==0){
+                    return true;
+                }
+                for(int i=0;i<len;i++){
+                    for(int j=0;j<=i;j++){
+                        if(i!=j){
+                            dp[i][j]=dp[i-1][j]+nums[i+1];
+                        }else{
+                            dp[i][j]=nums[i]+nums[i+1];
+                        }
+                        if(dp[i][j]%k==0){
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+        }
     }
 }
