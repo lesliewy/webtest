@@ -22,7 +22,7 @@
         <jackson-annotations-version>2.3.2</jackson-annotations-version>
         <jackson-databind-version>2.3.2</jackson-databind-version>
         <slf4j-api-version>1.7.5</slf4j-api-version>
-        <log4j2-version>2.10.0</log4j2-version>
+        <log4j2-version>2.13.3</log4j2-version>
         <junit-version>4.11</junit-version>
         <mysql-connector-java-version>5.1.46</mysql-connector-java-version>
         <c3p0-version>0.9.1.2</c3p0-version>
