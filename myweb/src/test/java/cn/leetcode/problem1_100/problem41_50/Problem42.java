@@ -29,16 +29,39 @@ public class Problem42 {
     }
 
     /**
+     * <pre>
      * 方法一: 动态规划.
      *     dp[i]: 0 ~ i 个数的最大和.
+     *     当 dp[i - 1] > 0 dp[i−1]>0 时：执行 dp[i] = dp[i-1] + nums[i]
+     *     当 dp[i - 1] \leq 0dp[i−1]≤0 时：执行 dp[i] = nums[i
+     * </pre>
      *
      * @param nums
      * @return
      */
     public int maxSubArray(int[] nums) {
-
+        if (nums.length == 0) return 0;
+        int[] dp = new int[nums.length];
+        dp[0] = nums[0];
+        int max = dp[0];
+        for (int i = 1; i < dp.length; i++) {
+            if (dp[i - 1] > 0) {
+                dp[i] = dp[i - 1] + nums[i];
+            } else {
+                dp[i] = nums[i];
+            }
+            max = Math.max(max, dp[i]);
+        }
+        return max;
     }
 
+    /**
+     * <pre>
+     *     方法一优化: 不需要dp[]
+     * </pre>
+     * @param nums
+     * @return
+     */
     public int maxSubArray2(int[] nums) {
         int ans = Integer.MIN_VALUE, sum = 0;
         for (int num : nums) {

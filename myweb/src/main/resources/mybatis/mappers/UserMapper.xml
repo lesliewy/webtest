@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wy.dal.mapper.UserMapper">
+    <!-- id名必须和ProductMapper接口中的方法名保持一致-->
+    <select id="findById" parameterType="int" resultType="cn.wy.pojo.User">
+        select name, age from user where id = #{id}
+    </select>
+    <insert id="insertOne" parameterType="cn.wy.pojo.User">
+        insert into user(name, age) values(#{name}, #{age})
+    </insert>
+</mapper>

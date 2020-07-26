@@ -23,6 +23,7 @@ public class AtomicIntegerArrayDemo {
 
     public static class AddThread implements Runnable {
 
+        @Override
         public void run() {
             for (int k = 0; k < 10000; k++) {
                 arr.incrementAndGet(k % arr.length());

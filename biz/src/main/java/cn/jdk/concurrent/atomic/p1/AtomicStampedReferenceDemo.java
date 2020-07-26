@@ -3,11 +3,13 @@ package cn.jdk.concurrent.atomic.p1;
 import java.util.concurrent.atomic.AtomicStampedReference;
 
 /**
+ * <pre>
  * 封装了一个引用, 主要解决ABA问题: 线程一准备用CAS将变量的值由A替换为B, 在此之前线程二将变量的值由A替换为C, 线程三又将C替换为A, 然后线程一执行CAS时发现变量的值仍然为A, 所以线程一CAS成功.
  boolean compareAndSet(V expectedReference,V newReference,int expectedStamp,int newStamp): 比较设置 参数依次为：期望值 写入新值 期望时间戳 新时间戳
  public V getReference(): 获得当前对象引用
  public int getStamp():获得当前时间戳
  public void set(V newReference, int newStamp):设置当前对象引用和时间戳
+ </pre>
  *
  * Created by leslie on 2019/11/20.
  */
@@ -21,6 +23,7 @@ public class AtomicStampedReferenceDemo {
             final int timestamp = money.getStamp();
             new Thread() {
 
+                @Override
                 public void run() {
                         while (true) {
                             Integer m = money.getReference();

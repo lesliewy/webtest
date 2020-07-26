@@ -44,6 +44,7 @@
     <!--
     <import resource="classpath:dubbo/dubbo.xml" />
     -->
+    <import resource="classpath:mybatis/mybatis.xml"/>
 
     <!-- ================================== api bean begin ====================================== -->
     <bean id="restService" class="com.wy.myweb.restful.resteasy.RestImpl"/>

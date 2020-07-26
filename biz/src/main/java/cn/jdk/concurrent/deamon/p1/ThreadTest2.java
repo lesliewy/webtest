@@ -1,7 +1,7 @@
 package cn.jdk.concurrent.deamon.p1;
 
 /**
- * 不能再deamon 线程上执行业务操作，因为其终止条件是所有的用户线程不存在, 退出时机不可控.
+ * 不能在deamon 线程上执行业务操作，因为其终止条件是所有的用户线程不存在, 退出时机不可控.
  *
  * Created by leslie on 2019/11/20.
  */

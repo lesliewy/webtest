@@ -135,6 +135,12 @@
             <version>${asm-version}</version>
         </dependency>
         <!-- end: ASM -->
+        <!-- begin: jedis -->
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+        </dependency>
+        <!-- end: jedis -->
 
     </dependencies>
 

@@ -40,6 +40,8 @@ class Thread2 implements Runnable {
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        } finally {
+            System.out.println("this is finally...");
         }
     }
 

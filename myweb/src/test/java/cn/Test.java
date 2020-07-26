@@ -1,20 +1,11 @@
 package cn;
 
 import java.math.BigDecimal;
-import java.security.KeyFactory;
-import java.security.MessageDigest;
-import java.security.PrivateKey;
-import java.security.Timestamp;
-import java.security.spec.PKCS8EncodedKeySpec;
 import java.text.DecimalFormat;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-
-import javax.crypto.Cipher;
-
-import org.apache.commons.codec.binary.Base64;
 
 /**
  * Created by leslie on 2018/5/16.
@@ -114,6 +105,22 @@ public class Test {
         String str2 = new StringBuilder("ja").append("va").toString();
         System.out.println(str2.intern() == str2);
 
+    }
+
+    @org.junit.Test
+    public void test6() {
+        List<String> a = new ArrayList<>();
+        a.add("a");
+        a.add("b");
+//        a.add("c");
+        int i = 0;
+        try {
+            for (String s : a) {
+                a.remove(s);
+            }
+        } catch (Exception e) {
+            throw(e);
+        }
     }
 
 }

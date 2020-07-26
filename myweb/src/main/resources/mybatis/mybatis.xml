@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- xmlns 是xml的命名空间
+    要引入新的 context命名空间
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+ http://www.springframework.org/schema/beans/spring-beans.xsd
+ http://www.springframework.org/schema/context
+ http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:property-placeholder location="classpath:properties/jdbc.properties"/>
+
+    <!-- *** 提一点，xml 配置文件中涉及到的class，需要该模块(web)的pom引入了相关的jar *** -->
+
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driverClassName" value="${drivername}"/>
+        <property name="url" value="${url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${password}"/>
+
+        <!-- 数据池中最大连接数和最小连接数-->
+        <property name="maxActive" value="${maxActive}"/>
+        <property name="minIdle" value="${minIdle}"/>
+    </bean>
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!-- 注入连接池
+         给 sqlsessionFactory 的属性 dataSource 赋值
+            ref="引用该 spring容器 中的另一个 bean的id"
+        -->
+        <property name="dataSource" ref="dataSource"/>
+        <!-- 注入 映射文件 mapper
+         给 sqlsessionFactory 的属性 mapperLocation 赋值
+           value="映射文件 XXXmapper.xml 的相对路径"
+          -->
+        <property name="mapperLocations" value="classpath:mybatis/mappers/*.xml"/>
+    </bean>
+
+    <!--
+        两种方式使用sql:
+            1, 显示配置SqlSessionTemplate, 程序中使用;
+            2, MapperScannerConfigurer 指定Mapper Interface.
+    -->
+    <!--  用SqlSessionTemplate得到的SqlSession可以不用我们自己操心事务的管理，以及关闭操作-->
+    <!--  需要给 SqlSessionTemplate 的构造函数赋值-->
+    <!--
+    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg index="0" ref="sqlSessionFactory" />
+    </bean>
+    -->
+
+    <!-- 此方式不需要上面的 sqlSession -->
+    <bean id="scannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="cn.wy.dal.mapper"/>
+    </bean>
+</beans>
