@@ -5,6 +5,7 @@ package cn.frequent.exceptions.api;
  *     具体异常。
  *     指定各种异常的状态码.
  * </pre>
+ * 
  * Created by leslie on 2020/2/4.
  */
 public class ApiDefaultAddressNotDeleteException extends ApiException {

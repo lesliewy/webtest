@@ -25,6 +25,10 @@ public class Singleton1 {
     private Singleton1(){
     }
 
+    /**
+     * 法一、法二的综合，只是将同步方法替换为同步代码块.
+     * @return
+     */
     public static Singleton1 getSingleton() {
         if (singleton == null) {
             synchronized (Singleton1.class) {

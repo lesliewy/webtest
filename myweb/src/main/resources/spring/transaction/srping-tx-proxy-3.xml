@@ -22,7 +22,9 @@
         <property name="transactionManager" ref="transactionManager"/>
         <property name="transactionAttributes">
             <props>
-                <!--<prop key="*">PROPAGATION_REQUIRED</prop>-->
+                <!--<prop key="*">PROPAGATION_NESTED</prop>-->
+                <prop key="addUserInfoWithRuntimeException">PROPAGATION_REQUIRED</prop>
+                <prop key="addBothCalleeRuntimeException">PROPAGATION_REQUIRED</prop>
                 <!--<prop key="addBothCalleeRuntimeException">PROPAGATION_REQUIRED</prop>-->
                 <!--<prop key="addBothCallerRuntimeException">PROPAGATION_REQUIRED</prop>-->
                 <!--<prop key="addBothCaller*">PROPAGATION_SUPPORTS, -ApplicationException,+BusinessException</prop>-->

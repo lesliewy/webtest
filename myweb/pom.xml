@@ -142,6 +142,33 @@
                     </webResources>
                 </configuration>
             </plugin>
+            <!-- 自定义插件 -->
+            <!--
+               mavenplugin项目
+               执行: 组名:模块名:版本号:运行名称
+               mvn com.wy:wy-maven-plugin:1.0-SNAPSHOT:hello    执行plugin.  使用wy-maven-plugin 这种命名方式应该可以简化执行 mvn wy:hello，  不知道为什么简化的不行。
+            -->
+            <plugin>
+                <groupId>com.wy</groupId>
+                <artifactId>wy-maven-plugin</artifactId>
+                <version>1.0-SNAPSHOT</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <!-- 执行目标 -->
+                            <goal>hello</goal>
+                        </goals>
+                        <!-- 执行这个目标所在的生命周期 -->
+                        <!--
+                        <phase>clean</phase>
+                        -->
+                    </execution>
+                </executions>
+                <configuration>
+                    <!-- goal的参数 -->
+                    <test>peter</test>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>

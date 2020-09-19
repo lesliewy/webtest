@@ -32,7 +32,7 @@ public class Problem42 {
      * <pre>
      * 方法一: 动态规划.
      *     dp[i]: 0 ~ i 个数的最大和.
-     *     当 dp[i - 1] > 0 dp[i−1]>0 时：执行 dp[i] = dp[i-1] + nums[i]
+     *     当 dp[i - 1] > 0 时：执行 dp[i] = dp[i-1] + nums[i]
      *     当 dp[i - 1] \leq 0dp[i−1]≤0 时：执行 dp[i] = nums[i
      * </pre>
      *

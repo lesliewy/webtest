@@ -4,6 +4,16 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 
 /**
+ * <pre>
+ *
+ * 使用JDK proxy 步骤:
+ * 1, 通过实现 InvocationHandler 接口创建自己的调用处理器；
+   2, 通过为 Proxy 类指定 ClassLoader 对象和一组 interface 来创建动态代理类；
+   3, 通过反射机制获得动态代理类的构造函数，其唯一参数类型是调用处理器接口类型；
+   4, 通过构造函数创建动态代理类实例，构造时调用处理器对象作为参数被传入。
+   其中的2,3,4步都封装在了Proxy.newProxyInstance()中.
+ * </pre>
+ * 
  * Created by leslie on 2020/7/7.
  */
 public class App {

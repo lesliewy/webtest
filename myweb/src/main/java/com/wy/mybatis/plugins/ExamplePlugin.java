@@ -18,6 +18,14 @@ public class ExamplePlugin implements Interceptor {
         return invocation.proceed();
     }
 
+    /**
+     * <pre>
+     *     生成代理对象,并返回.
+     *     该代理对象implements InvocationHandler.
+     * </pre>
+     * @param target
+     * @return
+     */
     @Override
     public Object plugin(Object target) {
         System.out.println("this is ExamplePlugin plugin...");

@@ -36,7 +36,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public int addBothCalleeRuntimeException(User user, UserInfo userInfo) {
         userDao.addUser(user);
-        userInfoService.addUserInfoWithRuntimeException(userInfo);
+        try {
+            userInfoService.addUserInfoWithRuntimeException(userInfo);
+        }catch(Exception e){
+
+        }
         return 0;
     }
 
