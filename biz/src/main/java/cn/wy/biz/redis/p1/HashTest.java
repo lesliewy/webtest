@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import cn.wy.biz.redis.JedisPoolUtil;
 import redis.clients.jedis.Jedis;
 
 /**

@@ -1,4 +1,4 @@
-package cn.wy.biz.redis.p1;
+package cn.wy.biz.redis;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -20,7 +20,7 @@ public class JedisPoolUtil {
         // 加载配置文件
         BufferedReader bufferedReader = null;
         try {
-            bufferedReader = new BufferedReader(new FileReader("/Users/leslie/MyProjects/GitHub/webtest/myweb/src/main/resources/redis/redis.properties"));
+            bufferedReader = new BufferedReader(new FileReader("/Users/leslie/MyProjects/GitHub/webtest/myweb/src/main/resources/properties/redis.properties"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -39,7 +39,7 @@ public class JedisPoolUtil {
         poolConfig.setMaxIdle(Integer.parseInt(pro.get("redis.maxIdle").toString()));
         // 最小空闲连接数
         poolConfig.setMinIdle(Integer.parseInt(pro.get("redis.minIdle").toString()));
-        pool = new JedisPool(poolConfig, pro.get("redis.url").toString(),
+        pool = new JedisPool(poolConfig, pro.get("redis.host").toString(),
                              Integer.parseInt(pro.get("redis.port").toString()));
     }
 

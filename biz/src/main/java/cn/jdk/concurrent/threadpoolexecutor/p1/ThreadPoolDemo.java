@@ -16,8 +16,8 @@ import java.util.concurrent.*;
  *     SHUTDOWN -> TIDYING：当任务队列和线程池都清空后，会由 SHUTDOWN 转换为 TIDYING；
  *     STOP -> TIDYING：当任务队列清空后，发生这个转换； TIDYING -> TERMINATED：这个前面说了，当 terminated() 方法结束后；
  *     Created by leslie on
- *     </pre>
- * 
+ * </pre>
+ *
  * 2019/11/19.
  */
 public class ThreadPoolDemo {
@@ -58,7 +58,10 @@ public class ThreadPoolDemo {
         }
 
         /**
+         * <pre>
          * submit: 可以执行带返回值的Future, 当然也可以执行Runnable.
+         * FutureTask 是支持取消的异步.
+         * </pre>
          */
         Future<Long> result = cachedThreadPool.submit(new Callable<Long>() {
 

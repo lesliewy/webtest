@@ -16,4 +16,31 @@ public class TreeNode {
         this.val = val;
     }
 
+    @Override
+    public String toString() {
+        return serialize(this);
+    }
+
+    /* 主函数，将二叉树序列化为字符串 */
+    String serialize(TreeNode root) {
+        StringBuilder sb = new StringBuilder();
+        serialize(root, sb);
+        return sb.toString();
+    }
+
+    /* 辅助函数，将二叉树存入 StringBuilder */
+    void serialize(TreeNode root, StringBuilder sb) {
+        if (root == null) {
+//            sb.append("-1").append(",");
+            return;
+        }
+
+        /****** 前序遍历位置 ******/
+        sb.append(root.val).append(",");
+        /***********************/
+
+        serialize(root.left, sb);
+        serialize(root.right, sb);
+    }
+
 }

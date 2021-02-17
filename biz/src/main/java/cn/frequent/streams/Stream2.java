@@ -5,9 +5,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.google.common.collect.Lists;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * Created by leslie on 2019/12/22.
@@ -17,12 +17,12 @@ public class Stream2 {
     public static void main(String[] args) {
 
         Stream2 s2 = new Stream2();
-        // s2.testFilter1();
+        s2.testFilter1();
         // s2.testMap1();
         // s2.testMap2();
         // s2.testFlatMap1();
 
-        s2.testSorted1();
+        // s2.testSorted1();
         // s2.testDistinct();
         // s2.testLimit();
         // s2.testPeek();
@@ -95,18 +95,25 @@ public class Stream2 {
                 put(3, "c");
             }
         };
+        // collect 是新的, 和以前的maps没有关系.
         Map<Integer, String> collect = maps.entrySet().stream().filter(map -> map.getKey() == 2).collect(Collectors.toMap(p -> p.getKey(),
                                                                                                                           p -> p.getValue()));
+        maps.put(2, "bbb");
+        System.out.println(maps);
         System.out.println(collect);
     }
 
     /**
-     * map 遍历和转换操作
+     * <pre>
+     *    map 遍历和转换操作
+     * </pre>
      */
     private void testMap1() {
+        // List<String>: 修改每个String的值.
         String[] strArr = new String[] { "aa", "bb", "cc" };
         Stream<String> streamArr = Stream.of(strArr);
         streamArr.map(String::toLowerCase);
+
         List<TestObject> list = new ArrayList<>();
         TestObject testObject1 = new TestObject("a1", 12);
         TestObject testObject2 = new TestObject("b23", 13);
@@ -115,7 +122,7 @@ public class Stream2 {
         list.add(testObject2);
         list.add(testObject3);
 
-        // 获取对象中的某个属性, 可以多个map对属性进行转换, 最后组装成list.
+        // List<TestObject>: 获取对象中的某个属性, 可以多个map对属性进行转换, 最后组装成list.
         list.stream().map(TestObject::getName).collect(Collectors.toList()).forEach(System.out::println);
         System.out.println("======");
         list.stream().map(TestObject::getName).map(String::length).collect(Collectors.toList()).forEach(System.out::println);
@@ -123,11 +130,19 @@ public class Stream2 {
         Stream.of("a", "b", "hello").map(item -> item.toUpperCase()).forEach(System.out::println);
         System.out.println("======");
 
+        // List<Integer>: 修改每个Integer的值.
         List<Integer> nums = Arrays.asList(1, 2, 3, 4);
         List<Integer> squareNums = nums.stream().map(n -> n * n).collect(Collectors.toList());
         System.out.println(squareNums);
     }
 
+    /**
+     * <pre>
+     *    List<Student>中修改某个Student的sex 信息.
+     *    最后一定要加collect, 否则修改不成功.
+     *    map() 需要返回值.
+     * </pre>
+     */
     private void testMap2() {
         // List<Student> 提取其中的sex 信息, Map<name, sex>
         List<Student> students = Arrays.asList(new Student("wang", "M"), new Student("zhang", "M"),
@@ -135,9 +150,7 @@ public class Stream2 {
         Map<String, String> sexMap = students.stream().collect(Collectors.toMap(s -> s.getName(), s -> s.getSex()));
         System.out.println(sexMap);
 
-        /*
-         * List<Student> 修改某个Student的sex 信息, 最后一定要加collect, 否则修改不成功. map() 需要返回值.
-         */
+        // 这种情况直接return null.
         students.stream().filter(s -> s.getName().equals("wang")).map(s -> {
             s.setSex("F");
             return null;
@@ -253,7 +266,7 @@ public class Stream2 {
         // humansFiltered.sort((h1, h2) -> h1.getName().compareTo(h2.getName()));
         // humansFiltered.stream().forEach(s -> System.out.println(s));
 
-        humans4Order.sort((h1, h2) -> StringUtils.isBlank(h1.getName())? 0 : h1.getName().compareTo(h2.getName()));
+        humans4Order.sort((h1, h2) -> StringUtils.isBlank(h1.getName()) ? 0 : h1.getName().compareTo(h2.getName()));
         humans4Order.stream().forEach(s -> System.out.println(s));
 
         // 反转排序

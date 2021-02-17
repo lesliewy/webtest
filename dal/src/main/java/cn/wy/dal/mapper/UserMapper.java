@@ -27,5 +27,7 @@ public interface UserMapper {
 
     User findById(int id);
 
+    List<User> findWithCond(Map<String, Object> map);
+
     int insertOne(Map<String, Object> map);
 }

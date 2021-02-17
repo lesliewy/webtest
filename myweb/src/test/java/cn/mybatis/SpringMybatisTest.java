@@ -6,6 +6,8 @@ import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import cn.wy.dal.mapper.UserMapper;
@@ -15,6 +17,8 @@ import cn.wy.pojo.User;
  * Created by leslie on 2020/7/3.
  */
 public class SpringMybatisTest {
+
+    private static final Logger           logger  = LoggerFactory.getLogger(SpringMybatisTest.class);
 
     /*
      * 1. 创建spring容器 根据xml文件应用程序Context容器(上下文) classpath指配置文件的位置, 起点有java, resources. 写路径时相对这个起点去写
@@ -52,6 +56,7 @@ public class SpringMybatisTest {
         List<User> users = mapper.findByPage(map);
         for (User user : users) {
             System.out.println(user);
+            logger.info("user: {}", user);
         }
 
         User user = mapper.findById(2);

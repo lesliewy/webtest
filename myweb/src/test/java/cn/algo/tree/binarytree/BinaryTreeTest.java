@@ -22,7 +22,7 @@ public class BinaryTreeTest {
         Assert.assertArrayEquals(new Integer[]{3, 1, 8, 5, 12}, pre);
         System.out.println("=========");
 
-        Integer[] pos = BinaryTree.posOrder1(root);
+        Integer[] pos = BinaryTree.postOrder1(root);
         Assert.assertArrayEquals(new Integer[]{1, 5, 12, 8, 3}, pos);
     }
 
@@ -111,7 +111,7 @@ public class BinaryTreeTest {
         TreeNode root = binaryTree.buildTreeByLevelOrder("3,8,12,5,1");
         Assert.assertArrayEquals(new Integer[]{3, 8, 5, 1, 12}, binaryTree.preOrder1(root));
         Assert.assertArrayEquals(new Integer[]{5, 8, 1, 3, 12}, binaryTree.midOrder1(root));
-        Assert.assertArrayEquals(new Integer[]{5, 1, 8, 12, 3}, binaryTree.posOrder1(root));
+        Assert.assertArrayEquals(new Integer[]{5, 1, 8, 12, 3}, binaryTree.postOrder1(root));
         Assert.assertArrayEquals(new Integer[]{3, 8, 12, 5, 1}, binaryTree.levelOrder1(root));
     }
 

@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.google.common.collect.Lists;
+
 /**
  * <p>
  * 数组和ArrayList之间的转换.
@@ -17,6 +19,7 @@ public class Arrays1 {
     public static void main(String[] args) {
         System.out.println("===asList:");
         asList1();
+        asList2();
         System.out.println("===collections:");
         collections1();
         System.out.println("===stream:");
@@ -29,7 +32,12 @@ public class Arrays1 {
     }
 
     /**
-     * 数组转成ArrayList: Arrays.asList()
+     * <pre>
+     *    数组转成ArrayList: Arrays.asList()
+     *    返回的是 java.util.Arrays$ArrayList，  Arrays 的内部类ArrayList, 而不是 java.util.ArrayList;
+     *    java.util.Arrays$ArrayList: 不能使用add, remove 等操作.
+     *    java.util.Arrays$ArrayList:  和原始数组共用一个数组, 修改的话会相互影响.
+     * </pre>
      */
     public static void asList1() {
         Integer[] a = new Integer[2];
@@ -46,17 +54,34 @@ public class Arrays1 {
         b = new ArrayList<>(Arrays.asList(a));
         b.add(1);
 
-        int[] c = new int[] { 1, 2 };
+        // 和原数组相互影响.
+        Integer[] c = new Integer[] { 1, 2 };
+        List<Integer> cList = Arrays.asList(c);
+        cList.set(0, 111);
+        c[1] = 222;
+        System.out.println("changed c: " + Arrays.toString(c));
+        System.out.println("changed cList: " + cList);
 
         // 简写. 如果是对象，直接在() 内new YourObject(), "," 分隔.
-        List<Integer> c1 = Arrays.asList(
-                1,2,3
-        );
+        List<Integer> c1 = Arrays.asList(1, 2, 3);
         System.out.println(c1);
     }
 
+    /**
+     * <pre>
+     *    使用guava
+     *    可以add,remove;
+     *    和原数组不影响;
+     * </pre>
+     */
     public static void asList2() {
-
+        System.out.println("===========asList2=============");
+        Integer[] a = new Integer[] { 1, 2, 3 };
+        List<Integer> aList = Lists.newArrayList(a);
+        aList.add(4);
+        aList.set(0, 111);
+        System.out.println(Arrays.toString(a));
+        System.out.println(aList);
     }
 
     /**

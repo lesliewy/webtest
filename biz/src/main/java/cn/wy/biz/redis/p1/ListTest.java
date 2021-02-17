@@ -1,5 +1,6 @@
 package cn.wy.biz.redis.p1;
 
+import cn.wy.biz.redis.JedisPoolUtil;
 import redis.clients.jedis.Jedis;
 
 /**

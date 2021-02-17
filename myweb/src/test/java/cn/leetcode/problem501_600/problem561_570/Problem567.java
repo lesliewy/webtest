@@ -1,5 +1,8 @@
 package cn.leetcode.problem501_600.problem561_570;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -74,8 +77,8 @@ public class Problem567 {
 
     /**
      * <pre>
-     *     方法二: 全排列转换为字符频率.
-     *     只有当两个字符串包含相同次数的相同字符时，一个字符串才是另一个字符串的排列
+     *     方法二: 定长滑动窗口.
+     *     全排列转换为字符频率. 只有当两个字符串包含相同次数的相同字符时，一个字符串才是另一个字符串的排列
      *
      *     时间复杂度: O(l1 + 26*(l2-l1)*l1)
      *     空间复杂度：O(1)O(1)。表包含最多 26 个键值对
@@ -97,6 +100,7 @@ public class Problem567 {
         for (int i = 0; i <= s2.length() - s1.length(); i++) {
             int[] s2map = new int[26];
             // 计算s2中该子串的字符出现频率.
+            // 窗口每向前移动一步，都重新生成s2map
             for (int j = 0; j < s1.length(); j++) {
                 s2map[s2.charAt(i + j) - 'a']++;
             }
@@ -123,7 +127,8 @@ public class Problem567 {
 
     /**
      * <pre>
-     *     方法三: 滑动窗口.
+     *     方法三: 定长滑动窗口.
+     *     相比于方法二, 向前移动一步时，只更新了left, right 处字符的频率.
      *
      *     时间复杂度: O(l1 + 26*(l2-l1))
      * </pre>
@@ -152,6 +157,7 @@ public class Problem567 {
             // 变化窗口的第一个字符.
             s2map[s2.charAt(i) - 'a']--;
         }
+        // 处理了最后一个窗口.
         return matches(s1map, s2map);
     }
 
@@ -192,5 +198,54 @@ public class Problem567 {
             else if (s2map[l] == s1map[l] - 1) count--;
         }
         return count == 26;
+    }
+
+    /**
+     * <pre>
+     *     常规滑动窗口模板.  窗口收缩的条件: (right - left) > s1.length() 相当于是定长移动.
+     * </pre>
+     * 
+     * @param s1
+     * @param s2
+     * @return
+     */
+    public boolean checkInclusion5(String s1, String s2) {
+        Map<Character, Integer> need = new HashMap<>(), window = new HashMap<>();
+        for (char c : s1.toCharArray()) {
+            need.put(c, need.getOrDefault(c, 0).intValue() + 1);
+        }
+
+        int left = 0, right = 0;
+        int valid = 0;
+        while (right < s2.length()) {
+            char c = s2.charAt(right);
+            right++;
+            // 进行窗口内数据的一系列更新
+            if (need.containsKey(c)) {
+                window.put(c, window.getOrDefault(c, 0).intValue() + 1);
+                if (window.get(c).intValue() == need.get(c).intValue()) {
+                    valid++;
+                }
+            }
+
+            // 判断左侧窗口是否要收缩 窗口大小 >= 目标值大小, 相当于是定长窗口在移动.
+            while (right - left >= s1.length()) {
+                // 在这里判断是否找到了合法的子串 相等表示覆盖了目标串.
+                if (valid == need.size()) {
+                    return true;
+                }
+                char d = s2.charAt(left);
+                left++;
+                // 进行窗口内数据的一系列更新
+                if (need.containsKey(d)) {
+                    if (window.get(d).intValue() == need.get(d).intValue()) {
+                        valid--;
+                    }
+                    window.put(d, window.get(d).intValue() - 1);
+                }
+            }
+        }
+        // 未找到符合条件的子串
+        return false;
     }
 }

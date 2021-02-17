@@ -10,8 +10,22 @@ import cn.algo.tree.TreeNode;
 public class BinaryTree {
 
     /**
-     * 插入值到二叉树中
-     * 左节点 < 根 < 右节点.
+     * <pre>
+     *     二叉树遍历框架.
+     * </pre>
+     * 
+     * @param root
+     */
+    void traverse(TreeNode root) {
+        // 前序遍历
+        traverse(root.leftNode);
+        // 中序遍历
+        traverse(root.rightNode);
+        // 后序遍历
+    }
+
+    /**
+     * 插入值到二叉树中 左节点 < 根 < 右节点.
      *
      * @param value
      */
@@ -25,7 +39,7 @@ public class BinaryTree {
         }
         while (true) {
             parent = curr;
-            if ((Integer)curr.data > value) {
+            if ((Integer) curr.data > value) {
                 curr = curr.leftNode;
                 if (curr == null) {
                     parent.leftNode = node;
@@ -65,7 +79,7 @@ public class BinaryTree {
     }
 
     /**
-     * 前序遍历（递归）
+     * 前序遍历: 递归
      *
      * @param node
      */
@@ -78,78 +92,115 @@ public class BinaryTree {
     }
 
     /**
-     * 前序遍历（非递归）
-     *
-     * @param node
+     * <pre>
+     *    前序遍历:  迭代.
+     *    使用栈 该方法并不适用于中序、后序遍历. 因为前序遍历的访问节点顺序与处理节点顺序是一致的.
+     *    后序遍历还好，稍微变换即可.
+     * </pre>
      */
-    public static Integer[] preOrder1(TreeNode node) {
-        List<Integer> resultList = new ArrayList<>();
-        Stack<TreeNode> stack = new Stack<>();
-        while (node != null || !stack.empty()) {
-            while (node != null) {
-                System.out.println(node.data);
-                resultList.add((Integer) node.data);
-                stack.push(node);
-                node = node.leftNode;
+    public List<Integer> preorder1(TreeNode<Integer> root) {
+        Stack<TreeNode> st = new Stack<>();
+        List<Integer> result = new ArrayList<>();
+        if (root == null) {
+            return result;
+        }
+        st.push(root);
+        while (!st.empty()) {
+            TreeNode<Integer> node = st.pop(); // 中
+            // 前序遍历先访问当前节点.
+            result.add(node.data);
+
+            // 入栈顺序倒过来.
+            if (node.rightNode != null) {
+                st.push(node.rightNode); // 右（空节点不入栈）
             }
-            if (!stack.empty()) {
-                node = stack.pop();
-                node = node.rightNode;
+            if (node.leftNode != null) {
+                st.push(node.leftNode); // 左（空节点不入栈）
             }
         }
-        return resultList.toArray(new Integer[resultList.size()]);
+        return result;
     }
 
     /**
-     * 中序遍历（递归）
+     * 中序遍历: 递归
      *
      * @param node
      */
-    public static void midOrder(TreeNode node) {
+    public static void inOrder(TreeNode node) {
         if (node != null) {
-            midOrder(node.leftNode);
+            inOrder(node.leftNode);
             System.out.println(node.data);
-            midOrder(node.rightNode);
+            inOrder(node.rightNode);
         }
     }
 
     /**
-     * 树的深度遍历: 前序、中序、后序.
-     * 时间复杂度是:O(N), N是节点数，因为每个节点只访问了一次.
-     *
-     * 中序遍历（非递归）
-     *
-     * @param node
+     * <pre>
+     *     中序遍历: 迭代.
+     *     跟preOrder1不同, 访问节点的顺序和处理的顺序不一致. 这里用指针的遍历来帮助访问节点，栈则用来处理节点上的元素。
+     * </pre>
+     * @param root
+     * @return
      */
-    public static Integer[] midOrder1(TreeNode node) {
-        List<Integer> resultList = new ArrayList<>();
-        Stack<TreeNode> stack = new Stack<>();
-        while (node != null || !stack.empty()) {
-            while (node != null) {
-                stack.push(node);
-                node = node.leftNode;
-            }
-            if (!stack.empty()) {
-                node = stack.pop();
-                System.out.println(node.data);
-                resultList.add((Integer) node.data);
-                node = node.rightNode;
+    public List<Integer> inorder1(TreeNode<Integer> root) {
+        List<Integer> result = new ArrayList<>();
+        Stack<TreeNode> st = new Stack<>();
+        TreeNode<Integer> cur = root;
+        while (cur != null || !st.empty()) {
+            if (cur != null) { // 指针来访问节点，访问到最底层
+                st.push(cur); // 将访问的节点放进栈
+                cur = cur.leftNode; // 左
+            } else {
+                cur = st.pop(); // 从栈里弹出的数据，就是要处理的数据（放进result数组里的数据）
+                result.add(cur.data); // 中
+                cur = cur.rightNode; // 右
             }
         }
-        return resultList.toArray(new Integer[resultList.size()]);
+        return result;
     }
 
     /**
-     * 后序遍历
+     * 后序遍历: 递归
      *
      * @param node
      */
-    public static void posOrder(TreeNode node) {
+    public static void postOrder(TreeNode node) {
         if (node != null) {
-            posOrder(node.leftNode);
-            posOrder(node.rightNode);
+            postOrder(node.leftNode);
+            postOrder(node.rightNode);
             System.out.println(node.data);
         }
+    }
+
+    /**
+     * <pre>
+     *     后序遍历: 迭代.
+     *     利用根-右-左的倒序. 类似前面的前序遍历, 只不过入栈顺序不同，最后结果倒序.
+     *     只要先访问根节点就好办.
+     * </pre>
+     * 
+     * @param root
+     * @return
+     */
+    public List<Integer> postorder1(TreeNode<Integer> root) {
+        Stack<TreeNode> st = new Stack<>();
+        List<Integer> result = new ArrayList<>();
+        if (root == null) {
+            return result;
+        }
+        st.push(root);
+        while (!st.empty()) {
+            TreeNode<Integer> node = st.pop();
+            result.add(node.data);
+            if (node.leftNode != null) {
+                st.push(node.leftNode); // 相对于前序遍历，这更改一下入栈顺序 （空节点不入栈）
+            }
+            if (node.rightNode != null) {
+                st.push(node.rightNode); // 空节点不入栈
+            }
+        }
+        Collections.reverse(result); // 将结果反转之后就是左右中的顺序了
+        return result;
     }
 
     /**
@@ -157,7 +208,7 @@ public class BinaryTree {
      *
      * @param node
      */
-    public static Integer[] posOrder1(TreeNode node) {
+    public static Integer[] postOrder1(TreeNode node) {
         List<Integer> resultList = new ArrayList<>();
         Stack<TreeNode> stack1 = new Stack<>();
         Stack<Integer> stack2 = new Stack<>();
@@ -184,15 +235,12 @@ public class BinaryTree {
     }
 
     /**
-     * 后序遍历（非递归）
-     * 前序遍历  根--左--右
-     * 后序遍历  左--右--根
-     * 借用前序遍历算法思想 修改成 根--右--左，然后反转得到  左--右--根
+     * 后序遍历（非递归） 前序遍历 根--左--右 后序遍历 左--右--根 借用前序遍历算法思想 修改成 根--右--左，然后反转得到 左--右--根
      *
      * @param node
      * @return
      */
-    public static ArrayList<Integer> posOrder2(TreeNode node) {
+    public static ArrayList<Integer> postOrder2(TreeNode node) {
         ArrayList<Integer> list = new ArrayList<>();
         if (node != null) {
             Stack<TreeNode> stack = new Stack<>();
@@ -221,10 +269,10 @@ public class BinaryTree {
         if (node == null) {
             return;
         }
-        //计算深度
+        // 计算深度
         int depth = depth(node);
         for (int i = 0; i < depth; i++) {
-            //根据第几层得到所处第几层的所有元素
+            // 根据第几层得到所处第几层的所有元素
             leveOrder(node, i);
         }
     }
@@ -368,8 +416,7 @@ public class BinaryTree {
     }
 
     /**
-     * 是否是平衡二叉树
-     * 它是一棵空树或它的左右两个子树的高度差的绝对值不超过1，并且左右两个子树都是一棵平衡二叉树
+     * 是否是平衡二叉树 它是一棵空树或它的左右两个子树的高度差的绝对值不超过1，并且左右两个子树都是一棵平衡二叉树
      *
      * @param node
      * @return
@@ -391,8 +438,7 @@ public class BinaryTree {
     }
 
     /**
-     * 是否是完全二叉树
-     * 若设二叉树的深度为h，除第 h 层外，其它各层 (1～h-1) 的结点数都达到最大个数，第 h 层所有的结点都连续集中在最左边，这就是完全二叉树。
+     * 是否是完全二叉树 若设二叉树的深度为h，除第 h 层外，其它各层 (1～h-1) 的结点数都达到最大个数，第 h 层所有的结点都连续集中在最左边，这就是完全二叉树。
      *
      * @param root
      * @return
@@ -444,24 +490,22 @@ public class BinaryTree {
         }
         System.out.println(nodelist.size());
         for (int index = 0; index < nodelist.size() / 2 - 1; index++) {
-            //编号为n的节点他的左子节点编号为2*n 右子节点编号为2*n+1 但是因为list从0开始编号，所以还要+1
-            //这里父节点有1（2,3）,2（4,5）,3（6,7）,4（8,9） 但是最后一个父节点有可能没有右子节点 需要单独处理
+            // 编号为n的节点他的左子节点编号为2*n 右子节点编号为2*n+1 但是因为list从0开始编号，所以还要+1
+            // 这里父节点有1（2,3）,2（4,5）,3（6,7）,4（8,9） 但是最后一个父节点有可能没有右子节点 需要单独处理
             nodelist.get(index).leftNode = (nodelist.get(index * 2 + 1));
             nodelist.get(index).rightNode = (nodelist.get(index * 2 + 2));
         }
-        //单独处理最后一个父节点 因为它有可能没有右子节点
+        // 单独处理最后一个父节点 因为它有可能没有右子节点
         int index = nodelist.size() / 2 - 1;
-        nodelist.get(index).leftNode = (nodelist.get(index * 2 + 1)); //先设置左子节点
-        if (nodelist.size() % 2 == 1) { //如果有奇数个节点，最后一个父节点才有右子节点
+        nodelist.get(index).leftNode = (nodelist.get(index * 2 + 1)); // 先设置左子节点
+        if (nodelist.size() % 2 == 1) { // 如果有奇数个节点，最后一个父节点才有右子节点
             nodelist.get(index).rightNode = (nodelist.get(index * 2 + 2));
         }
         return nodelist.get(0);
     }
 
     /**
-     * 根据前序遍历还原二叉树
-     * (在前序序列化的时候，如果遇到为null的节点，则在字符串后面添加“#，”
-     * 当反序列化时，会进行判断，当前的位置是否为"#"，如果为#则不会创建子节点)
+     * 根据前序遍历还原二叉树 (在前序序列化的时候，如果遇到为null的节点，则在字符串后面添加“#，” 当反序列化时，会进行判断，当前的位置是否为"#"，如果为#则不会创建子节点)
      */
     int index = -1;
 
@@ -487,13 +531,11 @@ public class BinaryTree {
     }
 
     /**
-     * 反转二叉树
-     * 或者
-     * 建立一颗二叉树的镜像（如果一个二叉树同此二叉树的镜像是同样的，定义其为对称的。）
+     * 反转二叉树 或者 建立一颗二叉树的镜像（如果一个二叉树同此二叉树的镜像是同样的，定义其为对称的。）
      *
      * @param root
      */
-    public static void Mirror(TreeNode root) {
+    public static void mirror(TreeNode root) {
         if (root == null) {
             return;
         }
@@ -503,8 +545,8 @@ public class BinaryTree {
         TreeNode temp = root.leftNode;
         root.leftNode = root.rightNode;
         root.rightNode = temp;
-        Mirror(root.leftNode);
-        Mirror(root.rightNode);
+        mirror(root.leftNode);
+        mirror(root.rightNode);
     }
 
     /**
@@ -524,27 +566,4 @@ public class BinaryTree {
         return node;
     }
 
-    /**
-     * 判断两颗二叉树是否相同
-     *
-     * @param root1
-     * @param root2
-     * @return
-     */
-    public static boolean sameTree2(TreeNode root1, TreeNode root2) {
-        //树的结构不一样
-        if ((root1 == null && root2 != null) || (root1 != null && root2 == null)) {
-            return false;
-        }
-
-        //两棵树最终递归到终点时
-        if (root1 == null && root2 == null) {
-            return true;
-        }
-        if (Integer.valueOf((Integer) root1.data).compareTo(Integer.valueOf((Integer) root2.data)) != 0) {
-            return false;
-        } else {
-            return sameTree2(root1.leftNode, root2.leftNode) && sameTree2(root1.rightNode, root2.rightNode);
-        }
-    }
 }

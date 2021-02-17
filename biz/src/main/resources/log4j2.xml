@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO" monitorInterval="1800">
+    <properties>
+        <property name="LOG_HOME">/Users/leslie/IdeaProjects/Logs/webtest</property>
+        <property name="APP_FILE_NAME">app</property>
+    </properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{1} - %msg%n"/>
+        </Console>
+        <RollingRandomAccessFile name="rollinglogappender"
+                                 fileName="${LOG_HOME}/${APP_FILE_NAME}.log"
+                                 filePattern="${LOG_HOME}/${APP_FILE_NAME}-%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout
+                    pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{1} - %msg%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1"/>
+                <SizeBasedTriggeringPolicy size="50 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="50"/>
+        </RollingRandomAccessFile>
+    </Appenders>
+    <Loggers>
+        <Logger name="org.springframework.retry.support" level="trace" additivity="false">
+            <AppenderRef ref="rollinglogappender"/>
+        </Logger>
+        <Logger name="org.apache.ibatis" level="trace" additivity="true">
+            <AppenderRef ref="rollinglogappender"/>
+        </Logger>
+        <Logger name="cn.mybatis.cache" level="trace" additivity="false">
+            <AppenderRef ref="rollinglogappender"/>
+        </Logger>
+        <Logger name="mylog" level="trace" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        <Logger name="rollinglog" level="trace" additivity="false">
+            <AppenderRef ref="rollinglogappender"/>
+        </Logger>
+        <Root level="debug">
+            <AppenderRef ref="rollinglogappender"/>
+        </Root>
+    </Loggers>
+</Configuration>

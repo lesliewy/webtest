@@ -10,6 +10,7 @@ import java.util.stream.Stream;
 public class Stream1 {
 
     public static void main(String[] args) {
+        test1();
         List<String> list = Arrays.asList("a", "b", "A", "B");
         list.forEach(item -> {
             System.out.println(item);
@@ -22,6 +23,8 @@ public class Stream1 {
         map.forEach((k, v) -> {
             System.out.println("key:" + k + ",value:" + v);
         });
+
+        test2();
 
         /**
          * <pre>
@@ -91,19 +94,6 @@ public class Stream1 {
          * </Pre>
          */
 
-        // Map集合转 List
-        /**
-         * <pre>
-         * 
-         * List<Person> list = map.entrySet().stream().sorted(Comparator.comparing(e -> e.getKey())).map(e -> new Person(e.getKey(),
-         *                                                                                                               e.getValue())).collect(Collectors.toList());
-         * List<Person> list = map.entrySet().stream().sorted(Comparator.comparing(Map.Entry::getValue)).map(e -> new Person(e.getKey(),
-         *                                                                                                                   e.getValue())).collect(Collectors.toList());
-         * List<Person> list = map.entrySet().stream().sorted(Map.Entry.comparingByKey()).map(e -> new Person(e.getKey(),
-         *                                                                                                    e.getValue())).collect(Collectors.toList());
-         * </pre>
-         */
-
         // Collectors toList
         /**
          * <Pre>
@@ -155,10 +145,10 @@ public class Stream1 {
         // 假设有一个User实体类，有方法getId(),getName(),getAge()等方法，现在想要将User类型的流收集到一个Map中
         /**
          * <pre>
-         * 
+         *
          * Stream<User> userStream = Stream.of(new User(0, "张三", 18), new User(1, "张四", 19),
          *                                           new User(2, "张五", 19), new User(3, "老张", 50));
-         * 
+         *
          * Map<Integer, User> userMap = userSteam.collect(Collectors.toMap(User::getId, item -> item));
          * </pre>
          */
@@ -172,10 +162,10 @@ public class Stream1 {
          *                                                                           resultList.addAll(b);
          *                                                                           return resultList;
          *                                                                       }));
-         * 
+         *
          * Map<Integer, String> map = persons.stream().collect(Collectors.toMap(p -> p.age, p -> p.name,
          *                                                                      (name1, name2) -> name1 + ";" + name2));
-         * 
+         *
          * System.out.println(map);
          * // {18=Max, 23=Peter;Pamela, 12=David}
          * </pre>
@@ -188,22 +178,22 @@ public class Stream1 {
          * Map<String, List<String>> map = new HashMap<>();
          * map.put("java", Arrays.asList("1.7", "1.8"));
          * map.entrySet().stream();
-         * 
+         *
          * &#64;Getter
          * &#64;Setter
          * &#64;AllArgsConstructor
          * public static class User {
-         * 
+         *
          *     private List<String> versions;
          * }
-         * 
+         *
          * Map<String, User> collect = map.entrySet().stream().collect(Collectors.toMap(item -> item.getKey(),
          *                                                                              item -> new User(item.getValue())));
-         * 
+         *
          * // 示例2 Map<String,Integer> 转 Map<String,Double>
          * Map<String, Integer> pointsByName = new HashMap<>();
          * Map<String, Integer> maxPointsByName = new HashMap<>();
-         * 
+         *
          * Map<String, Double> gradesByName = pointsByName.entrySet().stream().map(entry -> new AbstractMap.SimpleImmutableEntry<>(entry.getKey(),
          *                                                                                                                         ((double) entry.getValue()
          *                                                                                                                          / maxPointsByName.get(entry.getKey()))
@@ -220,7 +210,7 @@ public class Stream1 {
          * // webs 必须是List<String>
          * String allwebs = String.join(",", webs);
          * System.out.println(allwebs);
-         * 
+         *
          * // stream
          * List<String> webs = Arrays.asList("voidcc.com", "voidmvn.com", "voidtool.com");
          * String allwebs = webs.stream().collect(Collectors.joining(","));
@@ -234,11 +224,11 @@ public class Stream1 {
          * Set<String> result = Stream.of("aa", "bb", "cc", "aa").collect(HashSet::new, HashSet::add, HashSet::addAll);
          * // Collectors类中已经预定义好了toList，toSet，toMap，toCollection等方便使用的方法，所以以上代码还可以简化如下：
          * Set<String> result2 = Stream.of("aa", "bb", "cc", "aa").collect(Collectors.toSet());
-         * 
+         *
          * Set<Integer> collectSet = Stream.of(1, 2, 3, 4).collect(Collectors.toSet());
          * System.out.println("collectSet: " + collectSet);
          * // 打印结果 collectSet: [1, 2, 3, 4]
-         * 
+         *
          * Stack stack1 = stream.collect(Collectors.toCollection(Stack::new));
          * // collect toString
          * String str = stream.collect(Collectors.joining()).toString();
@@ -250,10 +240,10 @@ public class Stream1 {
          * <Pre>
          * // 按照自然顺序进行排序 如果要自定义排序sorted 传入自定义的 Comparator
          * list.stream().sorted().filter((s) -> s.startsWith("a")).forEach(System.out::println);
-         * 
+         *
          * // 对象排序比较 请重写对象的equals()和hashCode()方法
          * list.sorted((a, b) -> b.compareTo(a));
-         * 
+         *
          * Collections.sort(names, (a, b) -> b.compareTo(a));
          * </Pre>
          */
@@ -262,10 +252,10 @@ public class Stream1 {
         /**
          * <Pre>
          * Comparator<Person> comparator = (p1, p2) -> p1.firstName.compareTo(p2.firstName);
-         * 
+         *
          * Person p1 = new Person("John", "Doe");
          * Person p2 = new Person("Alice", "Wonderland");
-         * 
+         *
          * comparator.compare(p1, p2); // > 0
          * comparator.reversed().compare(p1, p2); // < 0
          * </Pre>
@@ -274,7 +264,7 @@ public class Stream1 {
         // Collectors groupingBy 分组
         /**
          * <pre>
-         * 
+         *
          * Map<Integer, List<User>> ageMap2 = userStream.collect(Collectors.groupingBy(User::getAge));
          * </pre>
          */
@@ -282,9 +272,9 @@ public class Stream1 {
         // 对集合按照多个属性分组 将多个字段拼接成一个新字段，然后再使用groupBy分组
         /**
          * <pre>
-         * 
+         *
          * Map<String, List<EntryDeliveryDetailywk>> detailmap = details.stream().collect(Collectors.groupingBy(this::fetchGroupKey));
-         * 
+         *
          * private String fetchGroupKey(EntryDeliveryDetailywk detail) {
          *     return detail.getSkuId().toString() + detail.getItemsName() + detail.getWarehouseId().toString()
          *            + detail.getSupplierId().toString();
@@ -300,16 +290,16 @@ public class Stream1 {
         // mapping函数会应用到downstream结果上，并需要和其他函数配合使用；
         /**
          * <pre>
-         * 
+         *
          * Map<Integer, Long> sexCount = userStream.collect(Collectors.groupingBy(User::getSex,
          *                                                                                  Collectors.counting()));
-         * 
+         *
          * Map<Integer, Integer> ageCount = userStream.collect(Collectors.groupingBy(User::getSex,
          *                                                                                  Collectors.summingInt(User::getAge)));
-         * 
+         *
          * Map<Integer, Optional<User>> ageMax = userStream.collect(Collectors.groupingBy(User::getSex,
          *                                                                                  Collectors.maxBy(Comparator.comparing(User::getAge))));
-         * 
+         *
          * Map<Integer, List<String>> nameMap = userStream.collect(Collectors.groupingBy(User::getSex,
          *                                                                                  Collectors.mapping(User::getName,
          *                                                                                                     Collectors.toList())));
@@ -319,7 +309,7 @@ public class Stream1 {
         // groupingBy 根据年龄来分组.
         /**
          * <Pre>
-         * 
+         *
          * Map<Integer, List> peopleByAge = peoples.stream().filter(p -> p.age > 12).collect(Collectors.groupingBy(p -> p.age,
          *                                                                                                         Collectors.toList()));
          * </Pre>
@@ -328,7 +318,7 @@ public class Stream1 {
         // groupingBy 根据年龄分组，年龄对应的键值List存储的为Person的姓名
         /**
          * <Pre>
-         * 
+         *
          * Map<Integer, List> peopleByAge = people.stream().collect(Collectors.groupingBy(p -> p.age,
          *                                                                                Collectors.mapping((Person p) -> p.name,
          *                                                                                                   Collectors.toList())));
@@ -373,7 +363,7 @@ public class Stream1 {
         // Collectors中还提供了partitioningBy方法，接受一个Predicate函数，该函数返回boolean值，用于将内容分为两组。假设User实体中包含性别信息getSex()，可以按如下写法将userStream按性别分组
         /**
          * <pre>
-         * 
+         *
          * Map<Boolean, List<User>> sexMap = userStream.collect(Collectors.partitioningBy(item -> item.getSex() > 0));
          * </pre>
          */
@@ -395,12 +385,12 @@ public class Stream1 {
         /**
          * <pre>
          * String names = peoples.stream().map(p -> p.name).collect(Collectors.joining(","));
-         * 
+         *
          * String strJoin = Stream.of("1", "2", "3", "4").collect(Collectors.joining(",", "[", "]"));
          * System.out.println("strJoin: " + strJoin);
          * // 打印结果
          * // strJoin: [1,2,3,4]
-         * 
+         *
          * // 字符串连接
          * String phrase = persons.stream().filter(p -> p.age >= 18).map(p -> p.name).collect(Collectors.joining(" and ",
          *                                                                                                       "In Germany ",
@@ -431,9 +421,9 @@ public class Stream1 {
          * double min = dss.getMin();
          * double sum = dss.getSum();
          * double count = dss.getCount();
-         * 
+         *
          * IntSummaryStatistics ageSummary = persons.stream().collect(Collectors.summarizingInt(p -> p.age));
-         * 
+         *
          * System.out.println(ageSummary);
          * // IntSummaryStatistics{count=4, sum=76, min=12, average=19.000000, max=23}
          * </pre>
@@ -450,7 +440,7 @@ public class Stream1 {
         /**
          * <pre>
          * Double averageAge = persons.stream().collect(Collectors.averagingInt(p -> p.age));
-         * 
+         *
          * System.out.println(averageAge); // 19.0
          * </pre>
          */
@@ -463,11 +453,91 @@ public class Stream1 {
          *                                                                             p) -> j.add(p.name.toUpperCase()), // accumulator
          *                                                                            (j1, j2) -> j1.merge(j2), // combiner
          *                                                                            StringJoiner::toString); // finisher
-         * 
+         *
          * String names = persons.stream().collect(personNameCollector);
-         * 
+         *
          * System.out.println(names); // MAX | PETER | PAMELA | DAVID
          * </pre>
          */
+    }
+
+    private static void test1() {
+        System.out.println("======test1======");
+        Optional<String> a = Optional.of("a");
+        System.out.println("isPresent(): " + a.isPresent() + "  get(): " + a.get());
+        // 无值情况下不可以调用get(), 否则: java.util.NoSuchElementException
+        a = Optional.ofNullable(null);
+        Optional<String> b = Optional.empty();
+        System.out.println("a.isPresent(): " + a.isPresent());
+        System.out.println("b.isPresent(): " + b.isPresent());
+
+        //
+        System.out.println(a.orElse("a"));
+        System.out.println(b.orElseGet(() -> "c"));
+    }
+
+    /**
+     * <pre>
+     * map集合转为list
+     * </pre>
+     */
+    private static void test2() {
+        System.out.println("==========test2==========");
+        Person wang = new Person("wang", 12);
+        Person zhang = new Person("zhang", 13);
+        Person zhao = new Person("zhao", 14);
+        Person li = new Person("li", 15);
+        Map<String, Integer> map = new HashMap();
+        map.put("wang", 12);
+        map.put("zhang", 13);
+        map.put("zhao", 14);
+        map.put("li", 15);
+
+        List<Person> list = map.entrySet().stream().sorted(Comparator.comparing(e -> e.getKey())).map(e -> new Person(e.getKey(),
+                                                                                                                      e.getValue())).collect(Collectors.toList());
+        System.out.println(list);
+        list = map.entrySet().stream().sorted(Comparator.comparing(Map.Entry::getValue)).map(e -> new Person(e.getKey(),
+                                                                                                             e.getValue())).collect(Collectors.toList());
+        System.out.println(list);
+        list = map.entrySet().stream().sorted(Map.Entry.comparingByKey()).map(e -> new Person(e.getKey(),
+                                                                                              e.getValue())).collect(Collectors.toList());
+        System.out.println(list);
+
+        List<String> list4 = map.entrySet().stream().sorted(Comparator.comparing(e -> e.getValue())).map(e -> e.getKey()).collect(Collectors.toList());
+        System.out.println("4: " + list4);
+        List<String> list5 = map.entrySet().stream().sorted((e1, e2) -> e2.getValue().compareTo(e1.getValue())).map(e -> e.getKey()).collect(Collectors.toList());
+        System.out.println("5: " + list5);
+    }
+
+    private static class Person {
+
+        private String name;
+        private int    age;
+
+        public Person(String name, int age){
+            this.name = name;
+            this.age = age;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public int getAge() {
+            return age;
+        }
+
+        public void setAge(int age) {
+            this.age = age;
+        }
+
+        @Override
+        public String toString() {
+            return "{name: " + name + "; age:" + age + "}";
+        }
     }
 }
